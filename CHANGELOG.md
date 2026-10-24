@@ -11,7 +11,7 @@ All dates are UTC. The format follows [Keep a Changelog](https://keepachangelog.
 
 ### Release
 
-- Submitted to AMO as a listed add-on on 2026-10-24. Awaiting review.
+- Submitted to AMO as a listed add-on on 2026-10-24 (version ID 6617236). Awaiting review.
 
 ## [5.2.0] - 2026-10-24
 

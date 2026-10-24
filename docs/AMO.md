@@ -6,7 +6,8 @@ Checklist for submitting **Watchmarker Redo for YouTube** to addons.mozilla.org.
 
 - Submitted on **24 October 2026** as a **listed** add-on.
 - Add-on slug: `watchmarker-redo-for-youtube` (ID 3106729).
-- Version: 5.2.0, version ID 6617202, status `nominated`; file `unreviewed`.
+- Current version: **5.2.1**, version ID 6617236, status `nominated`; file `unreviewed`.
+- Previous version: 5.2.0, version ID 6617202 (superseded by 5.2.1).
 - Privacy policy: set.
 - Developer page: https://addons.mozilla.org/en-US/developers/addon/watchmarker-redo-for-youtube/
 - Public page after approval: https://addons.mozilla.org/firefox/addon/watchmarker-redo-for-youtube/
@@ -32,7 +33,7 @@ The XPI is written to `web-ext-artifacts/`. No bundler is required: the package 
 - **Support:** https://github.com/Jalkhov/youtube-watchmarker-redo/issues
 - **Privacy policy:** https://github.com/Jalkhov/youtube-watchmarker-redo/blob/master/PRIVACY.md
 - **Data collection:** `none`
-- **Listing icon:** uploaded separately from the manifest icon, from [`docs/listing-icon.png`](listing-icon.png) (72×72). The manifest icon only controls the browser UI.
+- **Listing icon:** uploaded separately from the manifest icon, from [`docs/listing-icon.png`](listing-icon.png) (128×128, orange variant). The manifest icon controls the browser UI; the listing icon is uploaded through the AMO API.
 
 Creating an add-on through the API does not set the listing icon. Upload it with a multipart `PATCH` to `/api/v5/addons/addon/<slug>/` using the field `icon`.
 
@@ -50,7 +51,8 @@ The source code is available on GitHub. Licensed under GPL-3.0.
 
 ## 4. Notes for the reviewer
 
-- Fork of `sniklaus/youtube-watchmarker` 5.1.0. The name and identifier are different so it cannot be confused with the original.
+- Fork of `sniklaus/youtube-watchmarker` 5.1.0. The name, identifier and orange icon are different so it cannot be confused with the original.
+- 5.2.1 only changes the icon (32/64/128 px variants) and has no functional changes; 5.2.0 contains the lifecycle and lookup fixes.
 - Main changes: Firefox event-page manifest, synchronous listener registration, port reconnection, lookup retries, restored assets, Shorts selector, `webRequestBlocking` removed.
 - No remote code or `eval`. The libraries in `content/` are official unmodified builds; versions and licenses are in `THIRD_PARTY.md`.
 - Permissions: `cookies` to authenticate against YouTube, `history` to read local history, `tabs` to update thumbnails, `webRequest` to observe progress, `declarativeNetRequest` for the `youtubei` headers. Full justification is in `README.md` and `PRIVACY.md`.
