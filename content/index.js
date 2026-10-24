@@ -719,6 +719,24 @@ jQuery(window.document).ready(async function() {
         })
     ;
 
+    let funcSearchidle = function() {
+        jQuery('#idSearch_Lookup')
+            .removeClass('disabled')
+            .find('i')
+                .eq(0)
+                    .css({
+                        'display': 'inline',
+                    })
+                .end()
+                .eq(1)
+                    .css({
+                        'display': 'none',
+                    })
+                .end()
+            .end()
+        ;
+    };
+
     jQuery('#idSearch_Lookup')
         .data({
             'intSkip' : 0,
@@ -761,24 +779,11 @@ jQuery(window.document).ready(async function() {
             objSearch.onMessage.addListener(function(objData) {
                 if (objData.strMessage === 'searchLookup') {
                     if (objData.objResponse === null) {
+                        funcSearchidle();
                         return;
                     }
 
-                    jQuery('#idSearch_Lookup')
-                        .removeClass('disabled')
-                        .find('i')
-                            .eq(0)
-                                .css({
-                                    'display': 'inline',
-                                })
-                            .end()
-                            .eq(1)
-                                .css({
-                                    'display': 'none',
-                                })
-                            .end()
-                        .end()
-                    ;
+                    funcSearchidle();
 
                     if (jQuery('#idSearch_Lookup').data('intSkip') === 0) {
                         jQuery('#idSearch_Results')
