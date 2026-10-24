@@ -251,15 +251,8 @@ window.fetch = async function(objRequest, objOptions) {
     let objResponse = await objFetch(objRequest, objOptions);
 
     if ((typeof(objRequest) === 'string' ? objRequest : objRequest.url).indexOf('.youtube.com/youtubei/v1/') !== -1) {
-        let strResponse = await objResponse.text();
-
-        funcEmitvideos(strResponse);
-
-        objResponse = new Response(strResponse, {
-            'status': objResponse.status,
-            'statusText': objResponse.statusText,
-            'headers': objResponse.headers,
-        });
+        // Read a clone so the page still gets the original response with url, type and headers intact.
+        funcEmitvideos(await objResponse.clone().text());
     }
 
     return objResponse;

@@ -1,20 +1,73 @@
 'use strict';
 
-let objDatabase = chrome.runtime.connect({
-    'name': 'database',
-});
+// A long-lived port dies with the event page. Reconnect lazily and turn a failed
+// in-flight request into an error response instead of leaving the page stuck.
+let funcPort = function(strName) {
+    let objPort = null;
+    let objPending = null;
+    let objListeners = [];
 
-let objHistory = chrome.runtime.connect({
-    'name': 'history',
-});
+    let funcConnect = function() {
+        objPort = chrome.runtime.connect({
+            'name': strName,
+        });
 
-let objYoutube = chrome.runtime.connect({
-    'name': 'youtube',
-});
+        for (let funcListener of objListeners) {
+            objPort.onMessage.addListener(funcListener);
+        }
 
-let objSearch = chrome.runtime.connect({
-    'name': 'search',
-});
+        objPort.onMessage.addListener(function(objData) {
+            if (objData.strMessage === objPending) {
+                objPending = null;
+            }
+        });
+
+        objPort.onDisconnect.addListener(function() {
+            objPort = null;
+
+            if (objPending !== null) {
+                let strMessage = objPending;
+                objPending = null;
+
+                for (let funcListener of objListeners) {
+                    funcListener({
+                        'strMessage': strMessage,
+                        'objResponse': null,
+                    });
+                }
+            }
+        });
+
+        return objPort;
+    };
+
+    return {
+        'onMessage': {
+            'addListener': function(funcListener) {
+                objListeners.push(funcListener);
+            },
+        },
+        'postMessage': function(objMessage) {
+            objPending = objMessage.strMessage;
+
+            let funcSend = function() {
+                (objPort === null ? funcConnect() : objPort).postMessage(objMessage);
+            };
+
+            try {
+                funcSend();
+            } catch (objError) {
+                objPort = null;
+                funcSend();
+            }
+        },
+    };
+};
+
+let objDatabase = funcPort('database');
+let objHistory = funcPort('history');
+let objYoutube = funcPort('youtube');
+let objSearch = funcPort('search');
 
 let funcStorageget = async function(strKey) {
     let objValue = await chrome.storage.local.get(strKey);

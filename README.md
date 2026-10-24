@@ -1,42 +1,51 @@
-# youtube-watchmarker
-Youtube keeps track of your watch history and automatically marks videos that you have already watched. They however only mark recently seen videos, which is kind of disappointing. This addon fixes this issue and keeps track of your entire watch history, such that not only the recently seen videos are being marked.
+# Watchmarker for Youtube (fork personal)
 
-<p align="center"><a href="https://sniklaus.com/youwatch"><img src="https://content.sniklaus.com/youwatch/screenshot.jpg" alt="Screenshot"></a></p>
+Fork personal de [Watchmarker for Youtube](https://github.com/sniklaus/youtube-watchmarker), la extensión que marca los vídeos de YouTube que ya has visto.
 
-## installation
-Firefox: https://addons.mozilla.org/en-US/firefox/addon/watchmarker-for-youtube/
-<br />
-Chrome: [https://chrome.google.com/webstore/detail/watchmarker-for-youtube/](https://chrome.google.com/webstore/detail/watchmarker-for-youtube/pfkkfbfdhomeagojoahjmkojeeepcolc)
+**Este fork no está publicado en addons.mozilla.org (AMO) y, por ahora, no se va a subir allí.** No recibirás actualizaciones automáticas: las versiones se instalan manualmente desde este repositorio. Tampoco está publicado en la Chrome Web Store; está pensado para Firefox.
 
-## questions
-<b>How can the persistence of the database be ensured?</b> There is an export and import feature, which makes it easy to create a backup of the history. This backup can  easily be archived such that you can ensure that you never lose your history.
+## Qué cambia respecto al original
 
-<b>How can I make sure that the database is complete?</b> The automatic synchronization only considers the recent activity. You are thus encouraged to manually initiate a complete synchronization in the settings, which incorporates as much of your history as possible.
+La base es la versión 5.1.0 del repositorio original. Este fork añade:
 
-## special thanks
-I would like to express my gratitude to [XP1](https://github.com/XP1) who has been a significant contributor to this project throughout the years. Not only does he support other users with their issues and opens up pull reuqest to improve this extension, he also comes up with [creative solutions](https://github.com/sniklaus/youtube-watchmarker/pull/126) such as adding a mutation observer to certain objects to detect changes in the Youtube layout.
+- **Arreglo del fallo intermitente** por el que la extensión dejaba de marcar vídeos y había que desactivarla y activarla otra vez. La causa era la muerte del *event page* de Manifest V3: los listeners se registraban después de varias operaciones asíncronas, así que el evento que despertaba la extensión se perdía, y la página de opciones se quedaba con puertos desconectados para siempre (`Attempt to postMessage on disconnected port`).
+- **Listener registrados de forma síncrona** al arrancar, base de datos IndexedDB abierta de forma perezosa y reintentada si falla, y reconexión automática de los puertos de la página de opciones.
+- **Reintento de las consultas** en la página de YouTube cuando el fondo no responde, en vez de dejar el vídeo sin marcar hasta recargar.
+- **Archivos que faltaban en el repositorio**: `idb.js`, `jquery.js`, `moment.js`, `download.js`, Bootstrap, Font Awesome y sus fuentes. Sin ellos la extensión no arrancaba en Firefox y la página de opciones salía rota.
+- **Manifest compatible con Firefox**: `background.scripts` (Firefox no usa `service_worker` en Manifest V3), `webRequestBlocking` y un ID propio de Gecko.
+- **La alarma de sincronización ya no se reinicia** en cada arranque del *event page*, por lo que la sincronización automática puede dispararse.
+- **El hook de `fetch` de YouTube conserva la respuesta original** (antes la reconstruía y perdía `url`, `type` y otras propiedades).
+- **Selector añadido para Shorts** que usan `watch?v=`.
 
-Also special thanks to [johan456789](https://github.com/johan456789), [widike](https://github.com/widike), and [andrei-cb](https://github.com/andrei-cb) for making many contributions to support the new manifest version. For example, consider [this](https://github.com/widike/youtube-watchmarker) fork for an entirely different spin of the extension that also supports syncing to a Supabase database.
+## Instalación
 
-## links
-* 2025.01 - this [project](https://github.com/yutotakano/youtube-takeout-json-to-watchmarker) to import from takeout by [yutotakano](https://github.com/yutotakano)
-* 2025.01 - this [project](https://github.com/serossi/YT2Grayjay) to import from takeout and export to grayjay by [serossi](https://github.com/serossi)
-* 2021.05 - this [project](https://github.com/janpaul123/youtube-takeout-to-watchmarker) to import from takeout by [janpaul123](https://github.com/janpaul123)
+### Prueba rápida
 
-## contributors
-* [0xva](https://github.com/0xva)
-* [andrei-cb](https://github.com/andrei-cb)
-* [JeffBuckles](https://github.com/JeffBuckles)
-* [JGKle](https://github.com/JGKle)
-* [johan456789](https://github.com/johan456789)
-* [Johni0702](https://github.com/Johni0702)
-* [lbmaian](https://github.com/lbmaian)
-* [ngoclong19](https://github.com/ngoclong19)
-* [shoaibshakeel381](https://github.com/shoaibshakeel381)
-* [TotalCaesar659](https://github.com/TotalCaesar659)
-* [widike](https://github.com/widike)
-* [XP1](https://github.com/XP1)
-* [Yentis](https://github.com/Yentis)
+1. Abre `about:debugging#/runtime/this-firefox`.
+2. Pulsa **Cargar complemento temporal**.
+3. Selecciona el `manifest.json` de este directorio.
 
-## license
-Please refer to the appropriate file within this repository.
+La extensión desaparece al cerrar Firefox y el almacenamiento temporal puede perderse. Para uso diario, instala un XPI sin firmar en Firefox Developer Edition o Nightly con `xpinstall.signatures.required` en `false`, o genera el XPI y fírmalo con tu propia cuenta de AMO para uso privado.
+
+### Migrar tu historial desde la versión de AMO
+
+Este fork usa el ID `youtube-watchmarker-redo@jalkhov`, distinto del original, así que no comparte la base de datos:
+
+1. En la versión original: **Ajustes → Database → Export**.
+2. En este fork: **Ajustes → Database → Import** y selecciona el archivo `.database`.
+
+El fork puede convivir instalado con la versión de AMO, pero solo una de las dos debe quedarse activa marcando vídeos.
+
+## Estado
+
+Es un fork personal, sin garantías ni soporte. Los cambios se probaron cargando la extensión en Firefox; no hay suite de pruebas automatizada. Si algo falla, revisa la consola del complemento en `about:debugging`.
+
+## Créditos
+
+- Autor original: [sniklaus](https://github.com/sniklaus) y sus [contribuidores](https://github.com/sniklaus/youtube-watchmarker#contributors).
+- Los archivos vendored que faltaban se recuperaron del paquete firmado de AMO y del fork de [cflaming](https://github.com/cflaming/youtube-watchmarker), que documentó el mismo problema.
+- Ideas y correcciones revisadas en los forks de [widike](https://github.com/widike/youtube-watchmarker), [capische](https://github.com/capische/youtube-watchmarker) y [johan456789](https://github.com/johan456789/youtube-watchmarker).
+
+## Licencia
+
+Consulta el archivo [LICENSE](LICENSE) del proyecto original.

@@ -3,6 +3,19 @@
 let strLastchange = null;
 let intWatchdate = {};
 let objObservers = new WeakMap();
+let objPending = {};
+let intRetry = null;
+
+let funcRetry = function() {
+    if (intRetry !== null) {
+        return;
+    }
+
+    intRetry = window.setTimeout(function() {
+        intRetry = null;
+        refresh();
+    }, 1000);
+};
 
 // ##########################################################
 
@@ -12,6 +25,7 @@ let videos = function(strIdent) {
         'a.yt-lockup-view-model__content-image[href^="/watch?v=' + strIdent + '"]', // old
         'a.ytd-thumbnail[href^="/watch?v=' + strIdent + '"]', // list
         'a.reel-item-endpoint[href^="/shorts/' + strIdent + '"]', // shorts
+        'a.reel-item-endpoint[href*="watch?v=' + strIdent + '"]', // shorts
         'a.ytp-modern-videowall-still[href*="/watch?v=' + strIdent + '"]', // videowall
         'a.ytp-videowall-still[href*="/watch?v=' + strIdent + '"]', // videowall
         'a.ytp-ce-covering-overlay[href*="/watch?v=' + strIdent + '"]', // overlays
@@ -31,7 +45,7 @@ let refresh = async function() {
 
         observe(objVideo);
 
-        if (intWatchdate.hasOwnProperty(strIdent) === true) {
+        if ((intWatchdate.hasOwnProperty(strIdent) === true) || (objPending.hasOwnProperty(strIdent) === true)) {
             continue;
         }
 
@@ -45,13 +59,23 @@ let refresh = async function() {
             }
         }
 
+        objPending[strIdent] = true;
+
         await chrome.runtime.sendMessage({
             'strMessage': 'youtubeLookup',
             'strIdent': strIdent,
             'strTitle': strTitle,
         }, function(objResponse) {
-            if ((objResponse === null) || (objResponse === undefined)) {
+            delete objPending[strIdent];
+
+            // A missing response means the event page was asleep or failed; retry instead of silently giving up.
+            if ((chrome.runtime.lastError !== undefined) || (objResponse === undefined)) {
+                funcRetry();
                 return;
+            }
+
+            if (objResponse === null) {
+                return; // not in the database, so not watched
             }
 
             intWatchdate[objResponse.strIdent] = objResponse.intTimestamp;

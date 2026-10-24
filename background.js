@@ -1,6 +1,9 @@
 'use strict';
 
-importScripts('idb.js');
+// Firefox event pages load idb.js from background.scripts; Chrome service workers need importScripts.
+if (typeof importScripts === 'function') {
+    importScripts('idb.js');
+}
 
 let funcStorageget = async function(strKey) {
     let objValue = await chrome.storage.local.get(strKey);
@@ -354,7 +357,7 @@ let funcParsevideos = function(strText, boolProgress) {
 let Database = {
     objDatabase: null,
 
-    init: async function() {
+    open: async function() {
         Database.objDatabase = await idb.openDB('Database', 401, {
             'upgrade': function(objDatabase, intVerold, intVernew, objTransaction, objEvent) {
                 let objStore = null;
@@ -383,6 +386,10 @@ let Database = {
             }
         });
 
+        return Database.objDatabase;
+    },
+
+    init: function() {
         chrome.runtime.onConnect.addListener(function(objPort) {
             if (objPort.name === 'database') {
                 objPort.onMessage.addListener(async function(objData) {
@@ -423,7 +430,7 @@ let Database = {
 
     export: async function(objRequest, funcProgress) {
         let objVideos = [];
-        let objTransaction = Database.objDatabase.transaction(['storeDatabase'], 'readonly');
+        let objTransaction = (await funcDatabase()).transaction(['storeDatabase'], 'readonly');
         let objDatabase = objTransaction.objectStore('storeDatabase');
         let objCursor = await objDatabase.openCursor();
 
@@ -451,7 +458,7 @@ let Database = {
         let intNew = 0;
         let intExisting = 0;
 
-        let objTransaction = Database.objDatabase.transaction(['storeDatabase'], 'readwrite');
+        let objTransaction = (await funcDatabase()).transaction(['storeDatabase'], 'readwrite');
         let objDatabase = objTransaction.objectStore('storeDatabase');
 
         for (let objVideo of objRequest.objVideos) {
@@ -513,7 +520,7 @@ let Database = {
     },
 
     reset: async function(objRequest) {
-        let objTransaction = Database.objDatabase.transaction(['storeDatabase'], 'readwrite');
+        let objTransaction = (await funcDatabase()).transaction(['storeDatabase'], 'readwrite');
         let objDatabase = objTransaction.objectStore('storeDatabase');
 
         await objDatabase.clear();
@@ -524,6 +531,19 @@ let Database = {
 
         return {};
     }
+};
+
+let objDatabasepromise = null;
+
+let funcDatabase = function() {
+    if (objDatabasepromise === null) {
+        objDatabasepromise = Database.open().catch(function(objError) {
+            objDatabasepromise = null;
+            throw objError;
+        });
+    }
+
+    return objDatabasepromise;
 };
 
 let History = {
@@ -557,7 +577,7 @@ let History = {
             'maxResults': 1000000,
         });
 
-        let objTransaction = Database.objDatabase.transaction(['storeDatabase'], 'readwrite');
+        let objTransaction = (await funcDatabase()).transaction(['storeDatabase'], 'readwrite');
         let objDatabase = objTransaction.objectStore('storeDatabase');
 
         for (let objEntry of objHistory) {
@@ -710,7 +730,7 @@ let Youtube = {
                 strContinuation = strRegex[1];
             }
 
-            let objTransaction = Database.objDatabase.transaction(['storeDatabase'], 'readwrite');
+            let objTransaction = (await funcDatabase()).transaction(['storeDatabase'], 'readwrite');
             let objDatabase = objTransaction.objectStore('storeDatabase');
 
             for (let objVideo of funcParsevideos(strResponse, false)) {
@@ -782,7 +802,7 @@ let Youtube = {
     },
 
     lookup: async function(objRequest) {
-        let objTransaction = Database.objDatabase.transaction(['storeDatabase'], 'readonly');
+        let objTransaction = (await funcDatabase()).transaction(['storeDatabase'], 'readonly');
         let objDatabase = objTransaction.objectStore('storeDatabase');
 
         let objGet = await objDatabase.index('strIdent').get(objRequest.strIdent);
@@ -800,7 +820,7 @@ let Youtube = {
     },
 
     mark: async function(objRequest) {
-        let objTransaction = Database.objDatabase.transaction(['storeDatabase'], 'readwrite');
+        let objTransaction = (await funcDatabase()).transaction(['storeDatabase'], 'readwrite');
         let objDatabase = objTransaction.objectStore('storeDatabase');
 
         let strIdent = objRequest.strIdent;
@@ -901,7 +921,7 @@ let Search = {
 
     lookup: async function(objRequest) {
         let objVideos = [];
-        let objTransaction = Database.objDatabase.transaction(['storeDatabase'], 'readonly');
+        let objTransaction = (await funcDatabase()).transaction(['storeDatabase'], 'readonly');
         let objDatabase = objTransaction.objectStore('storeDatabase');
         let objCursor = await objDatabase.index('intTimestamp').openCursor(null, 'prev');
 
@@ -934,7 +954,7 @@ let Search = {
     },
 
     delete: async function(objRequest, funcProgress) {
-        let objTransaction = Database.objDatabase.transaction(['storeDatabase'], 'readwrite');
+        let objTransaction = (await funcDatabase()).transaction(['storeDatabase'], 'readwrite');
         let objDatabase = objTransaction.objectStore('storeDatabase');
 
         funcProgress({
@@ -1076,13 +1096,7 @@ let Search = {
 
 // ##########################################################
 
-(async function() {
-    setInterval(chrome.runtime.getPlatformInfo, 20000); // https://github.com/sniklaus/youtube-watchmarker/issues/179
-
-    chrome.runtime.onStartup.addListener(function() {
-        setInterval(chrome.runtime.getPlatformInfo, 20000); // https://github.com/sniklaus/youtube-watchmarker/issues/179
-    });
-
+let objReady = (async function() {
     if (await funcStorageget('extensions.Youwatch.Database.intSize') === null) {
         await funcStorageset('extensions.Youwatch.Database.intSize', 0);
     }
@@ -1155,16 +1169,30 @@ let Search = {
         await funcStorageset('extensions.Youwatch.Stylesheet.strHideprogress', 'yt-thumbnail-overlay-progress-bar-view-model, ytd-thumbnail-overlay-resume-playback-renderer, ytm-thumbnail-overlay-resume-playback-renderer { display:none !important; }');
     }
 
-    await Database.init();
-    await History.init();
-    await Youtube.init();
-    await Search.init();
+})();
+
+setInterval(chrome.runtime.getPlatformInfo, 20000); // https://github.com/sniklaus/youtube-watchmarker/issues/179
+
+chrome.runtime.onStartup.addListener(function() {
+    setInterval(chrome.runtime.getPlatformInfo, 20000); // https://github.com/sniklaus/youtube-watchmarker/issues/179
+});
+
+// Listeners must be registered synchronously so an event that wakes the event page is never lost.
+Database.init();
+History.init();
+Youtube.init();
+Search.init();
 
     chrome.action.onClicked.addListener(function() {
         chrome.runtime.openOptionsPage();
     });
 
     chrome.runtime.onMessage.addListener(function(objRequest, objSender, funcResponse) {
+        let funcFail = function(objError) {
+            console.error('watchmarker: message failed', objError);
+            funcResponse(null);
+        };
+
         if (objRequest.strMessage === 'youtubeLookup') {
             if (objRequest.strTitle !== '') {
                 Youtube.strTitlecache[objRequest.strIdent] = objRequest.strTitle;
@@ -1173,7 +1201,7 @@ let Search = {
             Youtube.lookup({
                 'strIdent': objRequest.strIdent,
                 'strTitle': objRequest.strTitle,
-            }).then(funcResponse);
+            }).then(funcResponse).catch(funcFail);
 
             return true; // indicate async response, i also tried using an async function with await but could not make it work
 
@@ -1186,7 +1214,7 @@ let Search = {
                 'strIdent': objRequest.strIdent,
                 'strTitle': objRequest.strTitle,
                 'boolEnsure': objRequest.boolEnsure,
-            }).then(funcResponse);
+            }).then(funcResponse).catch(funcFail);
 
             return true; // indicate async response, i also tried using an async function with await but could not make it work
 
@@ -1195,16 +1223,22 @@ let Search = {
                 Youtube.strTitlecache[objRequest.strIdent] = objRequest.strTitle;
             }
 
-            funcStorageget('extensions.Youwatch.Condition.boolYoubadge')
+            objReady
+                .then(function() {
+                    return funcStorageget('extensions.Youwatch.Condition.boolYoubadge');
+                })
                 .then(function(strValue) {
                     if (strValue === String(true)) {
-                        Youtube.mark({
+                        return Youtube.mark({
                             'strIdent': objRequest.strIdent,
                             'strTitle': objRequest.strTitle,
                             'boolEnsure': objRequest.boolEnsure,
                         }).then(funcResponse);
                     }
+
+                    funcResponse(null);
                 })
+                .catch(funcFail)
             ;
 
             return true; // indicate async response, i also tried using an async function with await but could not make it work
@@ -1213,10 +1247,12 @@ let Search = {
     });
 
     chrome.tabs.onUpdated.addListener(async function(intTab, objChange, objTab) {
+        await objReady;
+
         if (objTab.id < 0) {
             return;
 
-        } else if (objTab.url.indexOf('.youtube.com') === -1) {
+        } else if ((objTab.url === undefined) || (objTab.url.indexOf('.youtube.com') === -1)) {
             return;
 
         }
@@ -1290,6 +1326,8 @@ let Search = {
     });
 
     chrome.webRequest.onBeforeRequest.addListener(async function(objData) { // does not seem to get triggered in firefox so we need to revisit this at some point
+        await objReady;
+
         if (await funcStorageget('extensions.Youwatch.Condition.boolYouprog') === String(true)) {
             if (objData.url.indexOf('muted=1') !== -1) {
                 return;
@@ -1363,11 +1401,17 @@ let Search = {
         }],
     });
 
-    chrome.alarms.create('synchronize', {
-        'periodInMinutes': 60,
+    chrome.alarms.get('synchronize', function(objAlarm) {
+        if (!objAlarm) {
+            chrome.alarms.create('synchronize', {
+                'periodInMinutes': 60,
+            });
+        }
     });
 
     chrome.alarms.onAlarm.addListener(async function(objAlarm) {
+        await objReady;
+
         if (objAlarm.name === 'synchronize') {
             if (await funcStorageget('extensions.Youwatch.Condition.boolBrowhist') === String(true)) {
                 await History.synchronize({
@@ -1390,4 +1434,3 @@ let Search = {
             }
         }
     });
-})();

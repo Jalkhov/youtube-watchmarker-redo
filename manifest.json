@@ -1,11 +1,11 @@
 {
     "manifest_version": 3,
 
-    "name": "Watchmarker for Youtube",
-    "description": "Automatically mark videos on Youtube that you have already watched.",
-    "homepage_url": "https://sniklaus.com/",
+    "name": "Watchmarker for Youtube (personal fork)",
+    "description": "Personal fork of Watchmarker for Youtube. Marks videos you already watched. Not published on addons.mozilla.org.",
+    "homepage_url": "https://github.com/Jalkhov/youtube-watchmarker-redo",
 
-    "version": "5.1.0",
+    "version": "5.2.0",
 
     "permissions": [
         "alarms",
@@ -16,14 +16,11 @@
         "scripting",
         "storage",
         "tabs",
-        "webRequest"
+        "webRequest",
+        "webRequestBlocking"
     ],
 
     "host_permissions": ["*://www.youtube.com/*", "*://m.youtube.com/*"],
-
-    "action": {
-        "default_title": "Open the settings page for the Watchmarker."
-    },
 
     "options_ui": {
         "page": "content/index.html",
@@ -31,11 +28,11 @@
     },
 
     "icons": {
-        "72": "content/icon.png"
+        "60": "content/icon.png"
     },
 
     "background": {
-        "service_worker": "background.js"
+        "scripts": ["idb.js", "background.js"]
     },
 
     "content_scripts": [{
@@ -53,9 +50,16 @@
     }],
 
     "action": {
-        "default_title": "Watchmarker for Youtube",
+        "default_title": "Open the settings page for the Watchmarker.",
         "default_icon": {
-            "72" : "content/icon.png"
+            "60": "content/icon.png"
+        }
+    },
+
+    "browser_specific_settings": {
+        "gecko": {
+            "id": "youtube-watchmarker-redo@jalkhov",
+            "strict_min_version": "128.0"
         }
     }
 }
