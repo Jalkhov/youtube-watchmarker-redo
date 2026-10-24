@@ -18,6 +18,7 @@ These files are unmodified release builds shipped with the extension. They are n
 - The Font Awesome CSS references `.woff2` files included in `content/`. The CSS also contains references to `.ttf` and v4 compatibility fonts that are not shipped; browsers use the available `.woff2` files.
 - Source maps are not included in the release package.
 - If AMO requires unminified sources for review, the upstream URLs above provide the exact published releases.
+- The `UNSAFE_VAR_ASSIGNMENT` warnings reported for `content/jquery.js` come from jQuery's internal `innerHTML` assignments. This extension does not pass untrusted HTML to jQuery; video titles are written with `.text()`.
 
 ## License texts
 

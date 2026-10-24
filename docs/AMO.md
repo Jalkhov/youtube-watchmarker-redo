@@ -59,6 +59,11 @@ The source code is available on GitHub. Licensed under GPL-3.0.
 - Tested with Firefox 158 headless: temporary load, background running, background termination, wake-up by searching from the options page, IndexedDB reads and writes.
 - Known limitations: YouTube history deletion with brand accounts (#170/#176), corrupted IndexedDB (#120), progress titles that sometimes store the URL.
 
+### Validator warnings
+
+- `data_collection_permissions` is recognized from Firefox 140 and Firefox for Android 142. `strict_min_version` remains 128 for older ESR installs; the key is ignored there and the extension collects no data either way.
+- The three `UNSAFE_VAR_ASSIGNMENT` warnings are inside the unmodified jQuery 3.7.1 build (`content/jquery.js`). The extension does not inject untrusted HTML through jQuery; titles are written with `.text()`.
+
 ## 5. Submit a new version
 
 The first version was submitted through the AMO API. The listing metadata lives in [`docs/amo-metadata.json`](amo-metadata.json):
