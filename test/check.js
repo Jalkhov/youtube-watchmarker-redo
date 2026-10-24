@@ -33,6 +33,9 @@ for (const strFile of files) {
 assert(manifest.background.scripts[0] === 'idb.js', 'idb.js must load before background.js');
 assert(manifest.background.scripts.includes('background.js') === true, 'background.js must be loaded');
 
+assert(manifest.permissions.includes('webRequestBlocking') === false, 'webRequestBlocking is unused and must not be requested');
+assert(manifest.browser_specific_settings.gecko.data_collection_permissions.required.includes('none') === true, 'AMO requires data_collection_permissions');
+
 for (const strFile of ['background.js', 'youtube.js', 'hooks.js', 'content/index.js']) {
     childProcess.execFileSync(process.execPath, ['--check', path.join(root, strFile)]);
 }
