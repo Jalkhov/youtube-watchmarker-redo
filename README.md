@@ -7,8 +7,8 @@ This fork is not affiliated with sniklaus, YouTube or Google. It keeps the origi
 ## Status
 
 - **Version 5.2.0**, the first stable release of this fork.
-- **AMO submission in preparation.** It is not published on addons.mozilla.org yet; until it is approved, install it from GitHub or with `about:debugging`.
-- Source code and release notes are on [GitHub](https://github.com/Jalkhov/youtube-watchmarker-redo).
+- **Submitted to AMO for review on 24 October 2026.** The public listing will be at [addons.mozilla.org/firefox/addon/watchmarker-redo-for-youtube](https://addons.mozilla.org/firefox/addon/watchmarker-redo-for-youtube/) once approved. Until then, install it from GitHub or with `about:debugging`.
+- Source code, release notes and the signed XPI (after approval) are on [GitHub](https://github.com/Jalkhov/youtube-watchmarker-redo).
 
 ## What changed from the original
 
@@ -39,7 +39,7 @@ Full details are in [CHANGELOG.md](CHANGELOG.md).
 
 ### From AMO
 
-When review finishes, the link will be in the releases section. The AMO version will be updated manually; this fork has no automatic updates.
+The add-on is in review at [AMO](https://addons.mozilla.org/firefox/addon/watchmarker-redo-for-youtube/) under the slug `watchmarker-redo-for-youtube` (add-on ID 3106729). Once approved, install it from there and receive updates through Firefox.
 
 ### Temporary, for testing
 
@@ -115,7 +115,7 @@ There are no automated browser tests. This release was tested with Firefox 158 i
 - If IndexedDB becomes corrupted, the extension cannot repair it by itself (issue #120). Export what you can, use **Reset**, then import again.
 - Some progress responses do not include the title, so the video URL is stored as the title. Marking by ID still works; it is corrected the next time the video is watched with a title available.
 - This manifest is Firefox-only. Chrome needs a variant with `service_worker`.
-- AMO publication is pending review.
+- AMO publication is awaiting review.
 
 ## Credits
 

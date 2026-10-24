@@ -2,6 +2,15 @@
 
 Checklist for submitting **Watchmarker Redo for YouTube** to addons.mozilla.org.
 
+## Status
+
+- Submitted on **24 October 2026** as a **listed** add-on.
+- Add-on slug: `watchmarker-redo-for-youtube` (ID 3106729).
+- Version: 5.2.0, version ID 6617202, status `nominated`; file `unreviewed`.
+- Privacy policy: set.
+- Developer page: https://addons.mozilla.org/en-US/developers/addon/watchmarker-redo-for-youtube/
+- Public page after approval: https://addons.mozilla.org/firefox/addon/watchmarker-redo-for-youtube/
+
 ## 1. Build the package
 
 ```bash
@@ -45,7 +54,19 @@ The source code is available on GitHub. Licensed under GPL-3.0.
 - Tested with Firefox 158 headless: temporary load, background running, background termination, wake-up by searching from the options page, IndexedDB reads and writes.
 - Known limitations: YouTube history deletion with brand accounts (#170/#176), corrupted IndexedDB (#120), progress titles that sometimes store the URL.
 
-## 5. Submit
+## 5. Submit a new version
+
+The first version was submitted through the AMO API. The listing metadata lives in [`docs/amo-metadata.json`](amo-metadata.json):
+
+```bash
+npx web-ext sign --source-dir . --channel=listed \
+  --amo-metadata docs/amo-metadata.json \
+  --approval-timeout=0 --timeout=300000 --no-input
+```
+
+Credentials come from `~/.web-ext-config.cjs` (mode 600) or from `WEB_EXT_API_KEY` / `WEB_EXT_API_SECRET`.
+
+For a new version, bump `version` in `manifest.json`, update `version.release_notes` in the metadata, rebuild, and run the command again. The same steps can be done in the web form:
 
 1. Go to https://addons.mozilla.org/developers/addon/submit/.
 2. Choose **On this site** (public listing) and upload the XPI.
@@ -57,7 +78,6 @@ If AMO asks for source code because of the minified libraries, attach the reposi
 
 ## 6. After approval
 
-- Download the signed XPI.
-- Create the GitHub release with that XPI and the notes from `CHANGELOG.md`.
-- Update the README with the AMO link.
+- Replace the unsigned XPI on the GitHub release with the signed one from AMO.
+- Update the README and repository description to point to the public listing.
 - For the next version: bump `version` in `manifest.json`, add an entry to `CHANGELOG.md`, repeat the checklist and upload the new XPI.

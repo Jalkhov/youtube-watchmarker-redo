@@ -32,6 +32,10 @@ First stable release of this fork. Based on Watchmarker 5.1.0.
 - Removed `webRequestBlocking`, which was unused.
 - README and project documentation rewritten in English.
 
+### Release
+
+- Submitted to AMO as a listed add-on on 2026-10-24 (add-on ID 3106729, version ID 6617202). Awaiting review.
+
 ### Known limitations
 
 - Deleting from YouTube history is still incomplete in some cases (#170, #176).
