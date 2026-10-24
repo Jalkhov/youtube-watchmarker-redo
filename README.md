@@ -1,100 +1,62 @@
-# Watchmarker Redo for YouTube
+<p align="center">
+  <img src="content/icon.png" alt="Watchmarker Redo for YouTube" width="128" height="128">
+</p>
 
-Community fork of [Watchmarker for Youtube](https://github.com/sniklaus/youtube-watchmarker), the extension that marks YouTube videos you have already watched without relying on YouTube's watch history.
+<h1 align="center">Watchmarker Redo for YouTube</h1>
 
-This fork is not affiliated with sniklaus, YouTube or Google. It keeps the original project's GPL-3.0 license.
+<p align="center">Marks YouTube videos you have already watched, without relying on YouTube's watch history.</p>
 
-## Status
+<p align="center">
+  <a href="https://github.com/Jalkhov/youtube-watchmarker-redo/releases"><img src="https://img.shields.io/github/v/release/Jalkhov/youtube-watchmarker-redo?label=release" alt="Release"></a>
+  <a href="https://addons.mozilla.org/firefox/addon/watchmarker-redo-for-youtube/"><img src="https://img.shields.io/badge/AMO-in%20review-orange" alt="AMO status"></a>
+  <img src="https://img.shields.io/badge/firefox-128%2B-blue" alt="Firefox 128+">
+  <img src="https://img.shields.io/badge/data%20collection-none-brightgreen" alt="No data collection">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-GPL--3.0-blue" alt="GPL-3.0"></a>
+</p>
 
-- **Version 5.2.1**, the current stable release of this fork.
-- **Submitted to AMO for review on 24 October 2026.** The public listing will be at [addons.mozilla.org/firefox/addon/watchmarker-redo-for-youtube](https://addons.mozilla.org/firefox/addon/watchmarker-redo-for-youtube/) once approved. Until then, install it from GitHub or with `about:debugging`.
-- Source code, release notes and the signed XPI (after approval) are on [GitHub](https://github.com/Jalkhov/youtube-watchmarker-redo).
+Community fork of [Watchmarker for Youtube](https://github.com/sniklaus/youtube-watchmarker), based on 5.1.0. Not affiliated with sniklaus, YouTube or Google.
 
-## What changed from the original
+## Highlights
 
-- Runs as a **Firefox MV3 event page** (`background.scripts`), not as a Chrome service worker.
-- Restores assets that were missing from the repository: `idb.js`, jQuery, Moment, Bootstrap, FontAwesome and download.js.
-- **Fixes the intermittent failure** that stopped marking videos until the extension was disabled and re-enabled:
-  - listeners are registered as soon as the background starts, before IndexedDB is opened;
-  - the options page reconnects its ports if Firefox suspends the background;
-  - the content script retries lost lookups;
-  - the synchronization alarm is no longer reset on every start.
-- Adds a **Shorts** selector and preserves the original `Response` when intercepting `fetch`.
-- Does not request `webRequestBlocking`, which was unused.
-- Declares `data_collection_permissions: none`: it does not collect or send data.
+- **Survives Firefox's event-page lifecycle.** Listeners are registered synchronously, IndexedDB opens lazily, the options page reconnects its ports and lookups are retried. This fixes the intermittent failure that required disabling and re-enabling the extension.
+- **Self-contained.** Restores the bundled assets that were missing from the repository: `idb.js`, jQuery, Moment, Bootstrap, FontAwesome and download.js.
+- **Shorts support** and a `fetch` wrapper that preserves the original `Response`.
+- **Minimal permissions.** `webRequestBlocking` was removed, and `data_collection_permissions` is `none`.
+- **Local by design.** No telemetry, no developer server, no remote code. Only YouTube is contacted, with your existing session.
 
-## 5.2.1 highlights
+Version history: [CHANGELOG.md](CHANGELOG.md).
 
-- New orange icon (film strip and play button) to distinguish this fork from the original Watchmarker, with 32, 64 and 128 px variants.
-- No functional changes.
+## Install
 
-## 5.2.0 highlights
+### AMO
 
-- First installable version of this fork on Firefox 128 or later.
-- Base updated to Watchmarker 5.1.0.
-- Fixed the event-page lifecycle and the options-page ports.
-- Retries lookups and marks when the background is slow to wake up.
-- Shorts selector and improved parsing of YouTube responses.
-- Documentation for privacy, permissions, third-party libraries and the publishing process.
-- Structure and syntax self-check to prevent missing files from shipping again.
+Version **5.2.1** is in review at [addons.mozilla.org/firefox/addon/watchmarker-redo-for-youtube](https://addons.mozilla.org/firefox/addon/watchmarker-redo-for-youtube/). After approval, install it from AMO and receive updates through Firefox.
 
-Full details are in [CHANGELOG.md](CHANGELOG.md).
-
-## Installation
-
-### From AMO
-
-The add-on is in review at [AMO](https://addons.mozilla.org/firefox/addon/watchmarker-redo-for-youtube/) under the slug `watchmarker-redo-for-youtube` (add-on ID 3106729). Once approved, install it from there and receive updates through Firefox.
-
-### Temporary, for testing
+### Temporary
 
 1. Open `about:debugging#/runtime/this-firefox`.
 2. Click **Load Temporary Add-on**.
 3. Select `manifest.json` in the repository root.
 
-The extension is removed when Firefox closes. This is the quick way to test changes.
+The extension is removed when Firefox closes.
 
-### Permanent, unsigned
+### Unsigned XPI
 
-Firefox Release does not allow installing unsigned XPIs. The options are:
+The XPI attached to GitHub releases is unsigned. Firefox Release cannot install it directly. Use `about:debugging`, or Firefox Developer Edition/Nightly with `xpinstall.signatures.required` set to `false`.
 
-- use **Firefox Developer Edition** or **Nightly** and set `xpinstall.signatures.required` to `false`; or
-- sign the XPI as an unlisted add-on from your AMO account.
+## Migrate from the original
 
-### Build the XPI
-
-```bash
-npx web-ext build --source-dir . --overwrite-dest
-```
-
-The file is written to `web-ext-artifacts/`.
-
-## Migrating data from the original extension
-
-The fork uses a different identifier (`youtube-watchmarker-redo@jalkhov`), so Firefox gives it a separate database. To keep your history:
+This fork uses a different Gecko ID, so it gets a separate database.
 
 1. In the original extension, open the options and click **Export**.
 2. In this fork, open the options and click **Import**.
-3. Choose the exported JSON file.
-4. Disable the original extension so it does not mark the same videos twice.
+3. Select the exported JSON, then disable the original to avoid duplicate marks.
 
-You can also start from scratch; the database is created automatically.
+## Privacy and permissions
 
-## Permissions
+Everything stays in the browser: settings in `storage.local`, watched videos in IndexedDB. The extension only contacts `youtube.com` and `m.youtube.com`. There is no telemetry, analytics, advertising or remote code.
 
-| Permission | What it is used for |
-| --- | --- |
-| `alarms` | Periodic synchronization every 60 minutes. |
-| `cookies` | Authenticate requests to YouTube with your own session. |
-| `declarativeNetRequest`, `declarativeNetRequestWithHostAccess` | Set the `Origin`, `Referer` and `Sec-Fetch-Mode` headers on requests to `youtubei`. |
-| `history` | Read browser history to synchronize watched videos. |
-| `scripting` | Inject the CSS that hides progress bars. |
-| `storage` | Save preferences and the database size. |
-| `tabs` | Find YouTube tabs and update their marks. |
-| `webRequest` | Observe YouTube progress requests. |
-| `*://www.youtube.com/*`, `*://m.youtube.com/*` | The only sites the extension works with. |
-
-`webRequestBlocking` is not used, no remote code is executed and there are no developer-operated servers. See [PRIVACY.md](PRIVACY.md) for details.
+The full permission rationale and data handling are in [PRIVACY.md](PRIVACY.md).
 
 ## Development
 
@@ -104,31 +66,28 @@ npx web-ext lint --source-dir .
 npx web-ext build --source-dir . --overwrite-dest
 ```
 
-The self-check verifies that the manifest is valid, that every referenced file exists, that `idb.js` loads before `background.js`, and that the JavaScript files have no syntax errors.
+`test/check.js` validates the manifest, referenced files, `idb.js` load order and JavaScript syntax. The package is plain repository content; no bundler is required.
 
-To load a development build:
-
-```bash
-npx web-ext run --source-dir . --firefox-profile /path/to/a/profile
-```
-
-There are no automated browser tests. This release was tested with Firefox 158 in headless mode: extension load, background running, background termination, wake-up by searching from the options page, and IndexedDB reads and writes. The publishing process is documented in [docs/AMO.md](docs/AMO.md).
+Runtime checks for 5.2.x used Firefox 158 headless: temporary load, background termination and wake-up, options-page requests and IndexedDB access. No automated browser test suite is included.
 
 ## Known limitations
 
-- Deleting from YouTube history is still incomplete in some cases, especially with brand accounts (upstream issues #170 and #176).
-- If IndexedDB becomes corrupted, the extension cannot repair it by itself (issue #120). Export what you can, use **Reset**, then import again.
-- Some progress responses do not include the title, so the video URL is stored as the title. Marking by ID still works; it is corrected the next time the video is watched with a title available.
-- This manifest is Firefox-only. Chrome needs a variant with `service_worker`.
-- AMO publication is awaiting review.
+- Deleting from YouTube history is incomplete in some cases, especially brand accounts ([#170](https://github.com/sniklaus/youtube-watchmarker/issues/170), [#176](https://github.com/sniklaus/youtube-watchmarker/issues/176)).
+- A corrupted IndexedDB database cannot be repaired by the extension ([#120](https://github.com/sniklaus/youtube-watchmarker/issues/120)); export what you can, reset and re-import.
+- Some YouTube progress responses omit the title, so the video URL is stored as the title. Marking by ID still works.
+- Firefox only. Chrome would need a `service_worker` manifest variant.
 
 ## Credits
 
-- [sniklaus](https://github.com/sniklaus/youtube-watchmarker): original project and 5.1.0 base.
-- [cflaming](https://github.com/cflaming/youtube-watchmarker): asset restoration and Shorts selector.
-- [widike](https://github.com/widike/youtube-watchmarker) and [capische](https://github.com/capische/youtube-watchmarker): ideas and later work on history and watch states.
-- [johan456789](https://github.com/johan456789): fork review.
+- [sniklaus](https://github.com/sniklaus/youtube-watchmarker) — original project and 5.1.0 base.
+- [cflaming](https://github.com/cflaming/youtube-watchmarker) — restored assets and Shorts selector.
+- [widike](https://github.com/widike/youtube-watchmarker), [capische](https://github.com/capische/youtube-watchmarker) — later work on history and watch states.
+- [johan456789](https://github.com/johan456789) — fork review.
 
 ## License
 
 GPL-3.0. See [LICENSE](LICENSE).
+
+---
+
+<p align="center">Unofficial fork maintained by <a href="https://github.com/Jalkhov">Jalkhov</a>.</p>
