@@ -1,97 +1,97 @@
 # Watchmarker Redo for YouTube
 
-Fork comunitario de [Watchmarker for Youtube](https://github.com/sniklaus/youtube-watchmarker), la extensión que marca los vídeos de YouTube que ya has visto sin depender del historial de YouTube.
+Community fork of [Watchmarker for Youtube](https://github.com/sniklaus/youtube-watchmarker), the extension that marks YouTube videos you have already watched without relying on YouTube's watch history.
 
-Este fork no está afiliado a sniklaus, a YouTube ni a Google. Mantiene la licencia GPL-3.0 del proyecto original.
+This fork is not affiliated with sniklaus, YouTube or Google. It keeps the original project's GPL-3.0 license.
 
-## Estado
+## Status
 
-- **Versión 5.2.0**, primera versión estable de este fork.
-- **Envío a AMO en preparación.** Todavía no está publicado en addons.mozilla.org; hasta que se apruebe, instálalo desde GitHub o con `about:debugging`.
-- El código fuente y las notas de cada versión están en [GitHub](https://github.com/Jalkhov/youtube-watchmarker-redo).
+- **Version 5.2.0**, the first stable release of this fork.
+- **AMO submission in preparation.** It is not published on addons.mozilla.org yet; until it is approved, install it from GitHub or with `about:debugging`.
+- Source code and release notes are on [GitHub](https://github.com/Jalkhov/youtube-watchmarker-redo).
 
-## Qué cambia respecto al original
+## What changed from the original
 
-- Funciona como **event page de Firefox MV3** (`background.scripts`), no como service worker de Chrome.
-- Recupera los assets que faltaban en el repositorio: `idb.js`, jQuery, Moment, Bootstrap, FontAwesome y download.js.
-- **Arregla el fallo intermitente** que dejaba de marcar vídeos hasta desactivar y reactivar la extensión:
-  - los listeners se registran en cuanto arranca el fondo, antes de abrir IndexedDB;
-  - la página de opciones reconecta sus puertos si Firefox duerme el fondo;
-  - el content script reintenta las consultas que se pierden;
-  - la alarma de sincronización ya no se reinicia en cada arranque.
-- Añade el selector de **Shorts** y conserva la `Response` original al interceptar `fetch`.
-- No solicita `webRequestBlocking`, que no se usaba.
-- Declara `data_collection_permissions: none`: no recopila ni envía datos.
+- Runs as a **Firefox MV3 event page** (`background.scripts`), not as a Chrome service worker.
+- Restores assets that were missing from the repository: `idb.js`, jQuery, Moment, Bootstrap, FontAwesome and download.js.
+- **Fixes the intermittent failure** that stopped marking videos until the extension was disabled and re-enabled:
+  - listeners are registered as soon as the background starts, before IndexedDB is opened;
+  - the options page reconnects its ports if Firefox suspends the background;
+  - the content script retries lost lookups;
+  - the synchronization alarm is no longer reset on every start.
+- Adds a **Shorts** selector and preserves the original `Response` when intercepting `fetch`.
+- Does not request `webRequestBlocking`, which was unused.
+- Declares `data_collection_permissions: none`: it does not collect or send data.
 
-## Novedades de 5.2.0
+## 5.2.0 highlights
 
-- Primera versión instalable de este fork en Firefox 128 o superior.
-- Base actualizada a Watchmarker 5.1.0.
-- Corrección del ciclo de vida de la event page y de los puertos de la página de opciones.
-- Reintento de lookups y de marcas cuando el fondo tarda en despertar.
-- Selector de Shorts y mejora del parseo de respuestas de YouTube.
-- Documentación de privacidad, permisos, librerías de terceros y proceso de publicación.
-- Auto-check de estructura y sintaxis para evitar que vuelvan a faltar archivos.
+- First installable version of this fork on Firefox 128 or later.
+- Base updated to Watchmarker 5.1.0.
+- Fixed the event-page lifecycle and the options-page ports.
+- Retries lookups and marks when the background is slow to wake up.
+- Shorts selector and improved parsing of YouTube responses.
+- Documentation for privacy, permissions, third-party libraries and the publishing process.
+- Structure and syntax self-check to prevent missing files from shipping again.
 
-El detalle completo está en [CHANGELOG.md](CHANGELOG.md).
+Full details are in [CHANGELOG.md](CHANGELOG.md).
 
-## Instalación
+## Installation
 
-### Desde AMO
+### From AMO
 
-Cuando la revisión termine, el enlace estará en la sección de releases. La versión de AMO se actualizará manualmente; este fork no tiene actualizaciones automáticas.
+When review finishes, the link will be in the releases section. The AMO version will be updated manually; this fork has no automatic updates.
 
-### Temporal, para probar
+### Temporary, for testing
 
-1. Abre `about:debugging#/runtime/this-firefox`.
-2. Pulsa **Cargar complemento temporal**.
-3. Selecciona `manifest.json` en la raíz del repositorio.
+1. Open `about:debugging#/runtime/this-firefox`.
+2. Click **Load Temporary Add-on**.
+3. Select `manifest.json` in the repository root.
 
-La extensión se descarga al cerrar Firefox. Es la forma rápida de probar cambios.
+The extension is removed when Firefox closes. This is the quick way to test changes.
 
-### Permanente sin firmar
+### Permanent, unsigned
 
-Firefox Release no permite instalar XPIs sin firmar. Las opciones son:
+Firefox Release does not allow installing unsigned XPIs. The options are:
 
-- usar **Firefox Developer Edition** o **Nightly** y poner `xpinstall.signatures.required` en `false`; o
-- firmar el XPI como complemento no listado desde tu cuenta de AMO.
+- use **Firefox Developer Edition** or **Nightly** and set `xpinstall.signatures.required` to `false`; or
+- sign the XPI as an unlisted add-on from your AMO account.
 
-### Compilar el XPI
+### Build the XPI
 
 ```bash
 npx web-ext build --source-dir . --overwrite-dest
 ```
 
-El archivo queda en `web-ext-artifacts/`.
+The file is written to `web-ext-artifacts/`.
 
-## Migrar los datos de la extensión original
+## Migrating data from the original extension
 
-El fork usa otro identificador (`youtube-watchmarker-redo@jalkhov`), así que Firefox le da una base de datos distinta. Para conservar el historial:
+The fork uses a different identifier (`youtube-watchmarker-redo@jalkhov`), so Firefox gives it a separate database. To keep your history:
 
-1. En la extensión original, abre las opciones y pulsa **Export**.
-2. En este fork, abre las opciones y pulsa **Import**.
-3. Elige el JSON exportado.
-4. Desactiva la extensión original para que no marque dos veces los mismos vídeos.
+1. In the original extension, open the options and click **Export**.
+2. In this fork, open the options and click **Import**.
+3. Choose the exported JSON file.
+4. Disable the original extension so it does not mark the same videos twice.
 
-También puedes empezar de cero; la base se crea sola.
+You can also start from scratch; the database is created automatically.
 
-## Permisos
+## Permissions
 
-| Permiso | Para qué se usa |
+| Permission | What it is used for |
 | --- | --- |
-| `alarms` | Sincronización periódica cada 60 minutos. |
-| `cookies` | Autenticar las peticiones a YouTube con tu propia sesión. |
-| `declarativeNetRequest`, `declarativeNetRequestWithHostAccess` | Ajustar las cabeceras `Origin`, `Referer` y `Sec-Fetch-Mode` de las peticiones a `youtubei`. |
-| `history` | Leer el historial del navegador para sincronizar vídeos vistos. |
-| `scripting` | Insertar el CSS que oculta las barras de progreso. |
-| `storage` | Guardar preferencias y el tamaño de la base. |
-| `tabs` | Localizar pestañas de YouTube y actualizar sus marcas. |
-| `webRequest` | Observar las peticiones de progreso de YouTube. |
-| `*://www.youtube.com/*`, `*://m.youtube.com/*` | Único sitio con el que trabaja la extensión. |
+| `alarms` | Periodic synchronization every 60 minutes. |
+| `cookies` | Authenticate requests to YouTube with your own session. |
+| `declarativeNetRequest`, `declarativeNetRequestWithHostAccess` | Set the `Origin`, `Referer` and `Sec-Fetch-Mode` headers on requests to `youtubei`. |
+| `history` | Read browser history to synchronize watched videos. |
+| `scripting` | Inject the CSS that hides progress bars. |
+| `storage` | Save preferences and the database size. |
+| `tabs` | Find YouTube tabs and update their marks. |
+| `webRequest` | Observe YouTube progress requests. |
+| `*://www.youtube.com/*`, `*://m.youtube.com/*` | The only sites the extension works with. |
 
-No se usa `webRequestBlocking`, no se ejecuta código remoto y no hay servidores propios. Más detalle en [PRIVACY.md](PRIVACY.md).
+`webRequestBlocking` is not used, no remote code is executed and there are no developer-operated servers. See [PRIVACY.md](PRIVACY.md) for details.
 
-## Desarrollo
+## Development
 
 ```bash
 node test/check.js
@@ -99,35 +99,31 @@ npx web-ext lint --source-dir .
 npx web-ext build --source-dir . --overwrite-dest
 ```
 
-El auto-check comprueba que el manifest sea válido, que existan todos los archivos referenciados, que `idb.js` se cargue antes que `background.js` y que los JS no tengan errores de sintaxis.
+The self-check verifies that the manifest is valid, that every referenced file exists, that `idb.js` loads before `background.js`, and that the JavaScript files have no syntax errors.
 
-Para cargar una versión de desarrollo:
+To load a development build:
 
 ```bash
-npx web-ext run --source-dir . --firefox-profile /ruta/a/un/perfil
+npx web-ext run --source-dir . --firefox-profile /path/to/a/profile
 ```
 
-No hay tests automatizados de navegador. Las pruebas de esta versión se hicieron con Firefox 158 en modo headless: carga de la extensión, fondo en ejecución, terminación del fondo, reactivación al buscar desde las opciones y escritura/lectura en IndexedDB. El proceso de publicación está en [docs/AMO.md](docs/AMO.md).
+There are no automated browser tests. This release was tested with Firefox 158 in headless mode: extension load, background running, background termination, wake-up by searching from the options page, and IndexedDB reads and writes. The publishing process is documented in [docs/AMO.md](docs/AMO.md).
 
-## Limitaciones conocidas
+## Known limitations
 
-- El borrado del historial de YouTube sigue siendo incompleto en algunos casos, sobre todo con cuentas de marca (issues upstream #170 y #176).
-- Si IndexedDB se corrompe, la extensión no puede repararla sola (issue #120). Exporta lo que puedas, usa **Reset** y vuelve a importar.
-- En algunas respuestas de progreso YouTube no incluye el título y se guarda la URL del vídeo como título. La marca por identificador sigue funcionando; se corrige al volver a ver el vídeo con un título disponible.
-- Este manifest es solo para Firefox. Chrome necesita una variante con `service_worker`.
-- La publicación en AMO está pendiente de revisión.
+- Deleting from YouTube history is still incomplete in some cases, especially with brand accounts (upstream issues #170 and #176).
+- If IndexedDB becomes corrupted, the extension cannot repair it by itself (issue #120). Export what you can, use **Reset**, then import again.
+- Some progress responses do not include the title, so the video URL is stored as the title. Marking by ID still works; it is corrected the next time the video is watched with a title available.
+- This manifest is Firefox-only. Chrome needs a variant with `service_worker`.
+- AMO publication is pending review.
 
-## Créditos
+## Credits
 
-- [sniklaus](https://github.com/sniklaus/youtube-watchmarker): proyecto original y base 5.1.0.
-- [cflaming](https://github.com/cflaming/youtube-watchmarker): restauración de assets y selector de Shorts.
-- [widike](https://github.com/widike/youtube-watchmarker) y [capische](https://github.com/capische/youtube-watchmarker): ideas y trabajo posterior sobre historial y estados.
-- [johan456789](https://github.com/johan456789): revisión del fork.
+- [sniklaus](https://github.com/sniklaus/youtube-watchmarker): original project and 5.1.0 base.
+- [cflaming](https://github.com/cflaming/youtube-watchmarker): asset restoration and Shorts selector.
+- [widike](https://github.com/widike/youtube-watchmarker) and [capische](https://github.com/capische/youtube-watchmarker): ideas and later work on history and watch states.
+- [johan456789](https://github.com/johan456789): fork review.
 
-## Licencia
+## License
 
-GPL-3.0. Consulta [LICENSE](LICENSE).
-
-## English summary
-
-Unofficial community fork of Watchmarker for YouTube, based on version 5.1.0. It fixes the Firefox MV3 event-page lifecycle that made the extension stop marking videos until it was disabled and re-enabled. No data is collected, stored remotely or sent to the maintainer; everything stays in the browser and the extension only talks to YouTube. Not yet published on addons.mozilla.org. Licensed under GPL-3.0.
+GPL-3.0. See [LICENSE](LICENSE).

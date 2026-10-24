@@ -57,9 +57,3 @@ Changes to this policy will be published in this repository. The date at the top
 ## Contact
 
 Open an issue at [github.com/Jalkhov/youtube-watchmarker-redo/issues](https://github.com/Jalkhov/youtube-watchmarker-redo/issues).
-
----
-
-## Resumen en español
-
-El desarrollador no recibe ni comparte ningún dato. Los ajustes y la base de vídeos vistos se guardan solo en tu Firefox (almacenamiento local e IndexedDB). La extensión únicamente se comunica con YouTube usando tu sesión, para consultar el historial y hacer las mismas peticiones que haría la web. No hay telemetría, publicidad, servidores propios ni código remoto. Puedes borrar los datos con **Reset** en las opciones o desinstalando la extensión.
