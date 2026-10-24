@@ -13,6 +13,7 @@ const manifest = JSON.parse(fs.readFileSync(path.join(root, 'manifest.json'), 'u
 const files = new Set([
     manifest.options_ui.page,
     ...manifest.background.scripts,
+    ...Object.values(manifest.icons || {}),
     ...manifest.content_scripts.flatMap(function(objScript) {
         return objScript.js;
     }),

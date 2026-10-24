@@ -5,7 +5,7 @@
     "description": "Marks YouTube videos you already watched. Community fork of Watchmarker. All data stays in your browser.",
     "homepage_url": "https://github.com/Jalkhov/youtube-watchmarker-redo",
 
-    "version": "5.2.0",
+    "version": "5.2.1",
 
     "permissions": [
         "alarms",
@@ -27,7 +27,9 @@
     },
 
     "icons": {
-        "60": "content/icon.png"
+        "32": "content/icon-32.png",
+        "64": "content/icon-64.png",
+        "128": "content/icon.png"
     },
 
     "background": {

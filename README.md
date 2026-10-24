@@ -6,7 +6,7 @@ This fork is not affiliated with sniklaus, YouTube or Google. It keeps the origi
 
 ## Status
 
-- **Version 5.2.0**, the first stable release of this fork.
+- **Version 5.2.1**, the current stable release of this fork.
 - **Submitted to AMO for review on 24 October 2026.** The public listing will be at [addons.mozilla.org/firefox/addon/watchmarker-redo-for-youtube](https://addons.mozilla.org/firefox/addon/watchmarker-redo-for-youtube/) once approved. Until then, install it from GitHub or with `about:debugging`.
 - Source code, release notes and the signed XPI (after approval) are on [GitHub](https://github.com/Jalkhov/youtube-watchmarker-redo).
 
@@ -22,6 +22,11 @@ This fork is not affiliated with sniklaus, YouTube or Google. It keeps the origi
 - Adds a **Shorts** selector and preserves the original `Response` when intercepting `fetch`.
 - Does not request `webRequestBlocking`, which was unused.
 - Declares `data_collection_permissions: none`: it does not collect or send data.
+
+## 5.2.1 highlights
+
+- New orange icon (film strip and play button) to distinguish this fork from the original Watchmarker, with 32, 64 and 128 px variants.
+- No functional changes.
 
 ## 5.2.0 highlights
 

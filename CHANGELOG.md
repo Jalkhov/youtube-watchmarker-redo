@@ -2,6 +2,17 @@
 
 All dates are UTC. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the versioning follows [SemVer](https://semver.org/).
 
+## [5.2.1] - 2026-10-24
+
+### Changed
+
+- New orange icon (film strip and play button) to distinguish the fork from the original Watchmarker. Added 32, 64 and 128 px variants.
+- No functional changes.
+
+### Release
+
+- Submitted to AMO as a listed add-on on 2026-10-24. Awaiting review.
+
 ## [5.2.0] - 2026-10-24
 
 First stable release of this fork. Based on Watchmarker 5.1.0.
