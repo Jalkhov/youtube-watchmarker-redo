@@ -69,7 +69,8 @@ let refresh = async function() {
             delete objPending[strIdent];
 
             // A missing response means the event page was asleep or failed; retry instead of silently giving up.
-            if ((chrome.runtime.lastError !== undefined) || (objResponse === undefined)) {
+            // Firefox sets lastError to null on success, so compare against null and undefined.
+            if ((chrome.runtime.lastError != null) || (objResponse === undefined)) {
                 funcRetry();
                 return;
             }
