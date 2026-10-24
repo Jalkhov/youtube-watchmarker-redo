@@ -32,6 +32,9 @@ The XPI is written to `web-ext-artifacts/`. No bundler is required: the package 
 - **Support:** https://github.com/Jalkhov/youtube-watchmarker-redo/issues
 - **Privacy policy:** https://github.com/Jalkhov/youtube-watchmarker-redo/blob/master/PRIVACY.md
 - **Data collection:** `none`
+- **Listing icon:** uploaded separately from the manifest icon, from [`docs/listing-icon.png`](listing-icon.png) (72×72). The manifest icon only controls the browser UI.
+
+Creating an add-on through the API does not set the listing icon. Upload it with a multipart `PATCH` to `/api/v5/addons/addon/<slug>/` using the field `icon`.
 
 ## 3. Suggested description
 
