@@ -36,6 +36,8 @@ Install from [addons.mozilla.org/firefox/addon/watchmarker-redo-for-youtube](htt
 
 The latest release includes the Mozilla-signed XPI for offline installs. Prefer AMO so Firefox keeps it updated.
 
+Beta builds are published as GitHub pre-releases. They are not listed on AMO; install them temporarily or in Developer Edition.
+
 ### Temporary
 
 1. Open `about:debugging#/runtime/this-firefox`.
@@ -50,7 +52,7 @@ This fork uses a different Gecko ID, so it gets a separate database.
 
 1. In the original extension, open the options and click **Export**.
 2. In this fork, open the options and click **Import**.
-3. Select the exported JSON, then disable the original to avoid duplicate marks.
+3. Select the exported `.database` file, then disable the original to avoid duplicate marks.
 
 ## Privacy and permissions
 

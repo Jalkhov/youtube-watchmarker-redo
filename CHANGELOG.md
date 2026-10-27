@@ -2,7 +2,9 @@
 
 All dates are UTC. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the versioning follows [SemVer](https://semver.org/).
 
-## [Unreleased]
+## [5.3.0.1] - 2026-10-27
+
+First beta of the options page overhaul. Not submitted to AMO.
 
 ### Changed
 
