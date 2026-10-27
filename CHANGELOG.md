@@ -2,6 +2,35 @@
 
 All dates are UTC. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the versioning follows [SemVer](https://semver.org/).
 
+## [5.3.1] - 2026-10-27
+
+First stable release of the options page overhaul.
+
+### Added
+
+- English and Spanish localization for the extension name, description, options page, status messages, dates and the watched badge. Firefox follows its own language setting.
+
+### Fixed
+
+- Center the switch thumb inside its track. The thumb was flush with the top edge because its margin collapsed.
+
+### Changed
+
+- Refreshed the options page with clearer sections and labels, accessible switches, compact search results and a proper reset confirmation.
+- Replaced Bootstrap with a small custom stylesheet and Font Awesome with inline Lucide SVGs.
+- Watch dates use the browser locale instead of a fixed `YYYY.MM.DD` format.
+
+### Removed
+
+- Bootstrap stylesheet (about 232 KB).
+- Font Awesome stylesheet and font files (about 390 KB).
+- Moment.js (about 59 KB); dates now use `Intl.DateTimeFormat`.
+- download.js (about 3.5 KB); exports now use a Blob and a temporary link.
+
+### Release
+
+- Approved and published on AMO on 2026-10-27.
+
 ## [5.3.0.2] - 2026-10-27
 
 Second beta of the options page overhaul. Not listed on AMO.

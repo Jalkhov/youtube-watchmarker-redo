@@ -37,7 +37,7 @@ Install from [addons.mozilla.org/firefox/addon/watchmarker-redo-for-youtube](htt
 
 The latest stable release includes the Mozilla-signed XPI for offline installs. Prefer AMO so Firefox keeps it updated.
 
-Beta builds are published as GitHub pre-releases. They are not listed on AMO; install them temporarily or in Developer Edition. The current beta, 5.3.0.2, includes the options page redesign and English/Spanish localization.
+Beta builds are published as GitHub pre-releases. They are not listed on AMO; install them temporarily or in Developer Edition.
 
 ### Temporary
 
