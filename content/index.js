@@ -126,6 +126,23 @@ let funcLoading = function(strMessage, strProgress) {
     jQuery('#idLoading_Close').addClass('disabled');
 };
 
+let funcDownload = function(strData, strFilename, strType) {
+    let objBlob = new Blob([strData], { 'type': strType });
+    let strUrl = URL.createObjectURL(objBlob);
+    let objLink = document.createElement('a');
+
+    objLink.href = strUrl;
+    objLink.download = strFilename;
+    document.body.appendChild(objLink);
+    objLink.click();
+    objLink.remove();
+
+    // Give Firefox time to start the download before releasing the URL.
+    setTimeout(function() {
+        URL.revokeObjectURL(strUrl);
+    }, 1000);
+};
+
 jQuery(window.document).ready(async function() {
     jQuery('#idExtension_Version').text('v' + chrome.runtime.getManifest().version);
 
@@ -153,7 +170,7 @@ jQuery(window.document).ready(async function() {
                             .text('Backup exported')
                         ;
 
-                        download(btoa(unescape(encodeURIComponent(JSON.stringify(objData.objResponse.objVideos)))), new Date().getFullYear() + '.' + ('0' + (new Date().getMonth() + 1)).slice(-2) + '.' + ('0' + new Date().getDate()).slice(-2) + '.database', 'application/octet-stream');
+                        funcDownload(btoa(unescape(encodeURIComponent(JSON.stringify(objData.objResponse.objVideos)))), new Date().getFullYear() + '.' + ('0' + (new Date().getMonth() + 1)).slice(-2) + '.' + ('0' + new Date().getDate()).slice(-2) + '.database', 'application/octet-stream');
                     }
 
                     jQuery('#idLoading_Close')

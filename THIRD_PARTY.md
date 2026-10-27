@@ -6,7 +6,6 @@ These files are unmodified release builds shipped with the extension. They are n
 | --- | --- | --- | --- | --- |
 | `content/jquery.js` | jQuery | 3.7.1 | MIT | https://jquery.com/download/ |
 | `content/index.html` (inline icons) | Lucide | 1.62.0 | ISC | https://lucide.dev |
-| `content/download.js` | download.js | 4.21 | MIT | http://danml.com/download.html |
 | `idb.js` | idb | 8.0.3 | ISC | https://www.npmjs.com/package/idb |
 
 ## Notes for reviewers
