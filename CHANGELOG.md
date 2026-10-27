@@ -14,6 +14,7 @@ All dates are UTC. The format follows [Keep a Changelog](https://keepachangelog.
 
 - Bootstrap stylesheet (about 232 KB).
 - Font Awesome stylesheet and font files (about 390 KB).
+- Moment.js (about 59 KB); dates now use `Intl.DateTimeFormat`.
 
 ## [5.2.1] - 2026-10-24
 

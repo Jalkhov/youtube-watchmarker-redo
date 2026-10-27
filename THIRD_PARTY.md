@@ -5,7 +5,6 @@ These files are unmodified release builds shipped with the extension. They are n
 | File | Project | Version | License | Source |
 | --- | --- | --- | --- | --- |
 | `content/jquery.js` | jQuery | 3.7.1 | MIT | https://jquery.com/download/ |
-| `content/moment.js` | Moment.js | 2.30.1 | MIT | https://momentjs.com/downloads/moment.min.js |
 | `content/index.html` (inline icons) | Lucide | 1.62.0 | ISC | https://lucide.dev |
 | `content/download.js` | download.js | 4.21 | MIT | http://danml.com/download.html |
 | `idb.js` | idb | 8.0.3 | ISC | https://www.npmjs.com/package/idb |

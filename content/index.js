@@ -83,6 +83,24 @@ let funcStorageset = async function(strKey, objValue) {
      await chrome.storage.local.set({ [strKey]: String(objValue) });
 };
 
+let objDateformat = new Intl.DateTimeFormat('en', {
+    'month': 'short',
+    'day': 'numeric',
+    'year': 'numeric',
+});
+
+let objTimeformat = new Intl.DateTimeFormat('en', {
+    'hour': '2-digit',
+    'minute': '2-digit',
+    'hourCycle': 'h23',
+});
+
+let funcFormatdate = function(intTimestamp) {
+    let objDate = new Date(intTimestamp);
+
+    return objDateformat.format(objDate) + ' · ' + objTimeformat.format(objDate);
+};
+
 let funcTimestamp = function(strValue) {
     let intValue = parseInt(strValue, 10);
 
@@ -90,7 +108,7 @@ let funcTimestamp = function(strValue) {
         return 'Never';
     }
 
-    return moment(intValue).format('MMM D, YYYY · HH:mm');
+    return funcFormatdate(intValue);
 };
 
 let funcRefreshsummary = async function() {
@@ -475,7 +493,7 @@ jQuery(window.document).ready(async function() {
 
                         objBody.append(jQuery('<div></div>')
                             .addClass('result-meta')
-                            .text(moment(objVideo.intTimestamp).format('MMM D, YYYY · HH:mm') + ' · ' + objVideo.intCount + (objVideo.intCount == 1 ? ' view' : ' views'))
+                            .text(funcFormatdate(objVideo.intTimestamp) + ' · ' + objVideo.intCount + (objVideo.intCount == 1 ? ' view' : ' views'))
                         );
 
                         let objDelete = jQuery('<button></button>')
