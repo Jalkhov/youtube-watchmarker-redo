@@ -1,0 +1,245 @@
+{
+    "extensionName": {
+        "message": "Watchmarker Redo for YouTube"
+    },
+    "extensionDescription": {
+        "message": "Marks YouTube videos you already watched. Community fork of Watchmarker. All data stays in your browser."
+    },
+    "actionTitle": {
+        "message": "Open Watchmarker Redo settings"
+    },
+    "heroSubtitle": {
+        "message": "Choose when YouTube videos are marked as watched and how they look."
+    },
+    "markingRules": {
+        "message": "Marking rules"
+    },
+    "markingRulesHelp": {
+        "message": "Choose which signals can mark a video as watched. Changes are saved automatically."
+    },
+    "conditionBrownavTitle": {
+        "message": "When I open a video"
+    },
+    "conditionBrownavHelp": {
+        "message": "Mark it as watched as soon as its page opens in the browser."
+    },
+    "conditionBrowhistTitle": {
+        "message": "When it appears in browser history"
+    },
+    "conditionBrowhistHelp": {
+        "message": "Mark it once Firefox records the video in your browsing history."
+    },
+    "conditionYouprogTitle": {
+        "message": "When the player reports progress"
+    },
+    "conditionYouprogHelp": {
+        "message": "Mark it after YouTube receives playback progress from the player."
+    },
+    "conditionYoubadgeTitle": {
+        "message": "When YouTube shows its watched badge"
+    },
+    "conditionYoubadgeHelp": {
+        "message": "Use YouTube's own red watched indicator when it appears."
+    },
+    "conditionYouhistTitle": {
+        "message": "When it appears in YouTube history"
+    },
+    "conditionYouhistHelp": {
+        "message": "Mark it once it shows up in your YouTube watch history."
+    },
+    "appearance": {
+        "message": "Appearance"
+    },
+    "appearanceHelp": {
+        "message": "Choose how watched videos look on YouTube."
+    },
+    "visualizationFadeoutTitle": {
+        "message": "Fade out watched thumbnails"
+    },
+    "visualizationFadeoutHelp": {
+        "message": "Dim thumbnails of videos you have already watched."
+    },
+    "visualizationGrayoutTitle": {
+        "message": "Gray out watched thumbnails"
+    },
+    "visualizationGrayoutHelp": {
+        "message": "Convert thumbnails of watched videos to grayscale."
+    },
+    "visualizationShowbadgeTitle": {
+        "message": "Show a watched badge"
+    },
+    "visualizationShowbadgeHelp": {
+        "message": "Add a small label to videos you have already watched."
+    },
+    "visualizationShowdateTitle": {
+        "message": "Include the watched date"
+    },
+    "visualizationShowdateHelp": {
+        "message": "Add the date to the watched badge. Only visible when the badge is enabled."
+    },
+    "visualizationHideprogressTitle": {
+        "message": "Hide progress bars"
+    },
+    "visualizationHideprogressHelp": {
+        "message": "Hide YouTube's progress bar on videos you have already watched."
+    },
+    "importHistory": {
+        "message": "Import history"
+    },
+    "importHistoryHelp": {
+        "message": "Fill your timeline from sources you already have. Recent YouTube activity also syncs automatically every hour."
+    },
+    "browserHistoryTitle": {
+        "message": "Browser history"
+    },
+    "browserHistoryHelp": {
+        "message": "Scan Firefox history for YouTube videos. Usually only needed once."
+    },
+    "youtubeHistoryTitle": {
+        "message": "YouTube watch history"
+    },
+    "youtubeHistoryHelp": {
+        "message": "Fetch videos from your YouTube account. Large histories can take a while."
+    },
+    "lastImport": {
+        "message": "Last import:"
+    },
+    "importBrowserHistory": {
+        "message": "Import browser history"
+    },
+    "importYoutubeHistory": {
+        "message": "Import YouTube history"
+    },
+    "searchHistory": {
+        "message": "Search history"
+    },
+    "searchHistoryHelp": {
+        "message": "Find a video in your local watched history."
+    },
+    "searchPlaceholder": {
+        "message": "Search by title..."
+    },
+    "searchAria": {
+        "message": "Search watched videos"
+    },
+    "search": {
+        "message": "Search"
+    },
+    "yourData": {
+        "message": "Your data"
+    },
+    "yourDataHelp": {
+        "message": "Watched videos and settings stay in this browser. Export a backup before uninstalling or resetting."
+    },
+    "videosTracked": {
+        "message": "videos tracked"
+    },
+    "exportBackup": {
+        "message": "Export backup"
+    },
+    "importBackup": {
+        "message": "Import backup"
+    },
+    "deleteAllData": {
+        "message": "Delete all data"
+    },
+    "deleteConfirm": {
+        "message": "Delete all watched history? This cannot be undone."
+    },
+    "deleteEverything": {
+        "message": "Delete everything"
+    },
+    "cancel": {
+        "message": "Cancel"
+    },
+    "savedAutomatically": {
+        "message": "Changes are saved automatically."
+    },
+    "working": {
+        "message": "Working..."
+    },
+    "close": {
+        "message": "Close"
+    },
+    "never": {
+        "message": "Never"
+    },
+    "searching": {
+        "message": "Searching..."
+    },
+    "searchFailed": {
+        "message": "Could not search. Try again."
+    },
+    "noVideos": {
+        "message": "No videos found."
+    },
+    "deleteFromHistory": {
+        "message": "Delete from history"
+    },
+    "exportingData": {
+        "message": "Exporting your data"
+    },
+    "exportFailed": {
+        "message": "Could not export your data"
+    },
+    "backupExported": {
+        "message": "Backup exported"
+    },
+    "importingData": {
+        "message": "Importing your data"
+    },
+    "backupReadFailed": {
+        "message": "Could not read that backup"
+    },
+    "backupReadHelp": {
+        "message": "Choose a .database file exported by Watchmarker."
+    },
+    "fileReadFailed": {
+        "message": "Could not read that file"
+    },
+    "fileReadHelp": {
+        "message": "Try choosing the backup again."
+    },
+    "importFailed": {
+        "message": "Could not import that backup"
+    },
+    "backupImported": {
+        "message": "Backup imported"
+    },
+    "importingBrowserHistory": {
+        "message": "Importing browser history"
+    },
+    "browserHistoryFailed": {
+        "message": "Could not import browser history"
+    },
+    "browserHistoryImported": {
+        "message": "Browser history imported"
+    },
+    "importingYoutubeHistory": {
+        "message": "Importing YouTube history"
+    },
+    "youtubeHistoryFailed": {
+        "message": "Could not import YouTube history"
+    },
+    "youtubeHistoryImported": {
+        "message": "YouTube history imported"
+    },
+    "deletingVideo": {
+        "message": "Deleting video"
+    },
+    "deleteFailed": {
+        "message": "Could not delete that video"
+    },
+    "videoDeleted": {
+        "message": "Video deleted"
+    },
+    "viewOne": {
+        "message": "1 view"
+    },
+    "viewMany": {
+        "message": "$1 views"
+    },
+    "badgeWatched": {
+        "message": "WATCHED"
+    }
+}

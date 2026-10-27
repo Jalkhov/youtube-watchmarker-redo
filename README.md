@@ -21,6 +21,7 @@ Community fork of [Watchmarker for Youtube](https://github.com/sniklaus/youtube-
 - **Survives Firefox's event-page lifecycle.** Listeners are registered synchronously, IndexedDB opens lazily, the options page reconnects its ports and lookups are retried. This fixes the intermittent failure that required disabling and re-enabling the extension.
 - **Self-contained.** Restores the bundled assets that were missing from the repository: `idb.js` and jQuery. Dates use `Intl.DateTimeFormat` and downloads use a Blob. UI icons are inline SVG (no icon font) and the options page uses a small custom stylesheet instead of Bootstrap.
 - **Shorts support** and a `fetch` wrapper that preserves the original `Response`.
+- **English and Spanish UI.** The extension follows Firefox's language for its name, options page, dates and watched badge.
 - **Minimal permissions.** `webRequestBlocking` was removed, and `data_collection_permissions` is `none`.
 - **Local by design.** No telemetry, no developer server, no remote code. Only YouTube is contacted, with your existing session.
 
@@ -34,9 +35,9 @@ Install from [addons.mozilla.org/firefox/addon/watchmarker-redo-for-youtube](htt
 
 ### Manual XPI
 
-The latest release includes the Mozilla-signed XPI for offline installs. Prefer AMO so Firefox keeps it updated.
+The latest stable release includes the Mozilla-signed XPI for offline installs. Prefer AMO so Firefox keeps it updated.
 
-Beta builds are published as GitHub pre-releases. They are not listed on AMO; install them temporarily or in Developer Edition.
+Beta builds are published as GitHub pre-releases. They are not listed on AMO; install them temporarily or in Developer Edition. The current beta, 5.3.0.2, includes the options page redesign and English/Spanish localization.
 
 ### Temporary
 

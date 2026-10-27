@@ -1,11 +1,13 @@
 {
     "manifest_version": 3,
 
-    "name": "Watchmarker Redo for YouTube",
-    "description": "Marks YouTube videos you already watched. Community fork of Watchmarker. All data stays in your browser.",
+    "default_locale": "en",
+
+    "name": "__MSG_extensionName__",
+    "description": "__MSG_extensionDescription__",
     "homepage_url": "https://github.com/Jalkhov/youtube-watchmarker-redo",
 
-    "version": "5.3.0.1",
+    "version": "5.3.0.2",
 
     "permissions": [
         "alarms",
@@ -51,7 +53,7 @@
     }],
 
     "action": {
-        "default_title": "Open the settings page for the Watchmarker.",
+        "default_title": "__MSG_actionTitle__",
         "default_icon": {
             "60": "content/icon.png"
         }

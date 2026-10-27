@@ -5,7 +5,7 @@
 
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-        <title>Watchmarker Redo for YouTube</title>
+        <title data-i18n="extensionName">Watchmarker Redo for YouTube</title>
 
         <link rel="icon" type="image/png" href="icon.png" />
 
@@ -50,22 +50,22 @@
 
             <div>
                 <h1>Watchmarker Redo</h1>
-                <p>Choose when YouTube videos are marked as watched and how they look.</p>
+                <p data-i18n="heroSubtitle">Choose when YouTube videos are marked as watched and how they look.</p>
             </div>
         </header>
 
         <main>
             <section class="section">
                 <div class="section-heading">
-                    <h2>Marking rules</h2>
-                    <p>Choose which signals can mark a video as watched. Changes are saved automatically.</p>
+                    <h2 data-i18n="markingRules">Marking rules</h2>
+                    <p data-i18n="markingRulesHelp">Choose which signals can mark a video as watched. Changes are saved automatically.</p>
                 </div>
 
                 <div class="section-body">
                     <div class="setting">
                         <div class="setting-copy">
-                            <label class="setting-title" for="idCondition_Brownav">When I open a video</label>
-                            <p class="setting-description" id="idCondition_Brownav_help">Mark it as watched as soon as its page opens in the browser.</p>
+                            <label class="setting-title" for="idCondition_Brownav" data-i18n="conditionBrownavTitle">When I open a video</label>
+                            <p class="setting-description" id="idCondition_Brownav_help" data-i18n="conditionBrownavHelp">Mark it as watched as soon as its page opens in the browser.</p>
                         </div>
 
                         <label class="switch">
@@ -76,8 +76,8 @@
 
                     <div class="setting">
                         <div class="setting-copy">
-                            <label class="setting-title" for="idCondition_Browhist">When it appears in browser history</label>
-                            <p class="setting-description" id="idCondition_Browhist_help">Mark it once Firefox records the video in your browsing history.</p>
+                            <label class="setting-title" for="idCondition_Browhist" data-i18n="conditionBrowhistTitle">When it appears in browser history</label>
+                            <p class="setting-description" id="idCondition_Browhist_help" data-i18n="conditionBrowhistHelp">Mark it once Firefox records the video in your browsing history.</p>
                         </div>
 
                         <label class="switch">
@@ -88,8 +88,8 @@
 
                     <div class="setting">
                         <div class="setting-copy">
-                            <label class="setting-title" for="idCondition_Youprog">When the player reports progress</label>
-                            <p class="setting-description" id="idCondition_Youprog_help">Mark it after YouTube receives playback progress from the player.</p>
+                            <label class="setting-title" for="idCondition_Youprog" data-i18n="conditionYouprogTitle">When the player reports progress</label>
+                            <p class="setting-description" id="idCondition_Youprog_help" data-i18n="conditionYouprogHelp">Mark it after YouTube receives playback progress from the player.</p>
                         </div>
 
                         <label class="switch">
@@ -100,8 +100,8 @@
 
                     <div class="setting">
                         <div class="setting-copy">
-                            <label class="setting-title" for="idCondition_Youbadge">When YouTube shows its watched badge</label>
-                            <p class="setting-description" id="idCondition_Youbadge_help">Use YouTube's own red watched indicator when it appears.</p>
+                            <label class="setting-title" for="idCondition_Youbadge" data-i18n="conditionYoubadgeTitle">When YouTube shows its watched badge</label>
+                            <p class="setting-description" id="idCondition_Youbadge_help" data-i18n="conditionYoubadgeHelp">Use YouTube's own red watched indicator when it appears.</p>
                         </div>
 
                         <label class="switch">
@@ -112,8 +112,8 @@
 
                     <div class="setting">
                         <div class="setting-copy">
-                            <label class="setting-title" for="idCondition_Youhist">When it appears in YouTube history</label>
-                            <p class="setting-description" id="idCondition_Youhist_help">Mark it once it shows up in your YouTube watch history.</p>
+                            <label class="setting-title" for="idCondition_Youhist" data-i18n="conditionYouhistTitle">When it appears in YouTube history</label>
+                            <p class="setting-description" id="idCondition_Youhist_help" data-i18n="conditionYouhistHelp">Mark it once it shows up in your YouTube watch history.</p>
                         </div>
 
                         <label class="switch">
@@ -126,15 +126,15 @@
 
             <section class="section">
                 <div class="section-heading">
-                    <h2>Appearance</h2>
-                    <p>Choose how watched videos look on YouTube.</p>
+                    <h2 data-i18n="appearance">Appearance</h2>
+                    <p data-i18n="appearanceHelp">Choose how watched videos look on YouTube.</p>
                 </div>
 
                 <div class="section-body">
                     <div class="setting">
                         <div class="setting-copy">
-                            <label class="setting-title" for="idVisualization_Fadeout">Fade out watched thumbnails</label>
-                            <p class="setting-description" id="idVisualization_Fadeout_help">Dim thumbnails of videos you have already watched.</p>
+                            <label class="setting-title" for="idVisualization_Fadeout" data-i18n="visualizationFadeoutTitle">Fade out watched thumbnails</label>
+                            <p class="setting-description" id="idVisualization_Fadeout_help" data-i18n="visualizationFadeoutHelp">Dim thumbnails of videos you have already watched.</p>
                         </div>
 
                         <label class="switch">
@@ -145,8 +145,8 @@
 
                     <div class="setting">
                         <div class="setting-copy">
-                            <label class="setting-title" for="idVisualization_Grayout">Gray out watched thumbnails</label>
-                            <p class="setting-description" id="idVisualization_Grayout_help">Convert thumbnails of watched videos to grayscale.</p>
+                            <label class="setting-title" for="idVisualization_Grayout" data-i18n="visualizationGrayoutTitle">Gray out watched thumbnails</label>
+                            <p class="setting-description" id="idVisualization_Grayout_help" data-i18n="visualizationGrayoutHelp">Convert thumbnails of watched videos to grayscale.</p>
                         </div>
 
                         <label class="switch">
@@ -157,8 +157,8 @@
 
                     <div class="setting">
                         <div class="setting-copy">
-                            <label class="setting-title" for="idVisualization_Showbadge">Show a watched badge</label>
-                            <p class="setting-description" id="idVisualization_Showbadge_help">Add a small label to videos you have already watched.</p>
+                            <label class="setting-title" for="idVisualization_Showbadge" data-i18n="visualizationShowbadgeTitle">Show a watched badge</label>
+                            <p class="setting-description" id="idVisualization_Showbadge_help" data-i18n="visualizationShowbadgeHelp">Add a small label to videos you have already watched.</p>
                         </div>
 
                         <label class="switch">
@@ -169,8 +169,8 @@
 
                     <div class="setting">
                         <div class="setting-copy">
-                            <label class="setting-title" for="idVisualization_Showdate">Include the watched date</label>
-                            <p class="setting-description" id="idVisualization_Showdate_help">Add the date to the watched badge. Only visible when the badge is enabled.</p>
+                            <label class="setting-title" for="idVisualization_Showdate" data-i18n="visualizationShowdateTitle">Include the watched date</label>
+                            <p class="setting-description" id="idVisualization_Showdate_help" data-i18n="visualizationShowdateHelp">Add the date to the watched badge. Only visible when the badge is enabled.</p>
                         </div>
 
                         <label class="switch">
@@ -181,8 +181,8 @@
 
                     <div class="setting">
                         <div class="setting-copy">
-                            <label class="setting-title" for="idVisualization_Hideprogress">Hide progress bars</label>
-                            <p class="setting-description" id="idVisualization_Hideprogress_help">Hide YouTube's progress bar on videos you have already watched.</p>
+                            <label class="setting-title" for="idVisualization_Hideprogress" data-i18n="visualizationHideprogressTitle">Hide progress bars</label>
+                            <p class="setting-description" id="idVisualization_Hideprogress_help" data-i18n="visualizationHideprogressHelp">Hide YouTube's progress bar on videos you have already watched.</p>
                         </div>
 
                         <label class="switch">
@@ -195,47 +195,47 @@
 
             <section class="section">
                 <div class="section-heading">
-                    <h2>Import history</h2>
-                    <p>Fill your timeline from sources you already have. Recent YouTube activity also syncs automatically every hour.</p>
+                    <h2 data-i18n="importHistory">Import history</h2>
+                    <p data-i18n="importHistoryHelp">Fill your timeline from sources you already have. Recent YouTube activity also syncs automatically every hour.</p>
                 </div>
 
                 <div class="section-body">
                     <div class="action-row">
                         <div class="action-copy">
-                            <h3>Browser history</h3>
-                            <p>Scan Firefox history for YouTube videos. Usually only needed once.</p>
-                            <p class="meta">Last import: <span id="idHistory_Timestamp">Never</span></p>
+                            <h3 data-i18n="browserHistoryTitle">Browser history</h3>
+                            <p data-i18n="browserHistoryHelp">Scan Firefox history for YouTube videos. Usually only needed once.</p>
+                            <p class="meta"><span data-i18n="lastImport">Last import:</span> <span id="idHistory_Timestamp">Never</span></p>
                         </div>
 
-                        <button class="button button-secondary" id="idHistory_Synchronize">Import browser history</button>
+                        <button class="button button-secondary" id="idHistory_Synchronize" data-i18n="importBrowserHistory">Import browser history</button>
                     </div>
 
                     <div class="action-row">
                         <div class="action-copy">
-                            <h3>YouTube watch history</h3>
-                            <p>Fetch videos from your YouTube account. Large histories can take a while.</p>
-                            <p class="meta">Last import: <span id="idYoutube_Timestamp">Never</span></p>
+                            <h3 data-i18n="youtubeHistoryTitle">YouTube watch history</h3>
+                            <p data-i18n="youtubeHistoryHelp">Fetch videos from your YouTube account. Large histories can take a while.</p>
+                            <p class="meta"><span data-i18n="lastImport">Last import:</span> <span id="idYoutube_Timestamp">Never</span></p>
                         </div>
 
-                        <button class="button button-secondary" id="idYoutube_Synchronize">Import YouTube history</button>
+                        <button class="button button-secondary" id="idYoutube_Synchronize" data-i18n="importYoutubeHistory">Import YouTube history</button>
                     </div>
                 </div>
             </section>
 
             <section class="section">
                 <div class="section-heading">
-                    <h2>Search history</h2>
-                    <p>Find a video in your local watched history.</p>
+                    <h2 data-i18n="searchHistory">Search history</h2>
+                    <p data-i18n="searchHistoryHelp">Find a video in your local watched history.</p>
                 </div>
 
                 <div class="section-body">
                     <div class="searchbar" role="search">
-                        <input class="input" id="idSearch_Query" type="search" placeholder="Search by title..." autocomplete="off" aria-label="Search watched videos" />
+                        <input class="input" id="idSearch_Query" type="search" placeholder="Search by title..." autocomplete="off" aria-label="Search watched videos" data-i18n-placeholder="searchPlaceholder" data-i18n-aria-label="searchAria" />
 
                         <button class="button button-primary" id="idSearch_Lookup" type="button">
                             <svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-search"></use></svg>
                             <svg class="icon icon-spin" aria-hidden="true" focusable="false" style="display:none;"><use href="#icon-loader-circle"></use></svg>
-                            <span>Search</span>
+                            <span data-i18n="search">Search</span>
                         </button>
                     </div>
 
@@ -247,29 +247,29 @@
 
             <section class="section">
                 <div class="section-heading">
-                    <h2>Your data</h2>
-                    <p>Watched videos and settings stay in this browser. Export a backup before uninstalling or resetting.</p>
+                    <h2 data-i18n="yourData">Your data</h2>
+                    <p data-i18n="yourDataHelp">Watched videos and settings stay in this browser. Export a backup before uninstalling or resetting.</p>
                 </div>
 
                 <div class="section-body">
                     <div class="data-summary">
                         <span class="data-count" id="idDatabase_Size">0</span>
-                        <span class="data-label">videos tracked</span>
+                        <span class="data-label" data-i18n="videosTracked">videos tracked</span>
                     </div>
 
                     <div class="button-row">
-                        <button class="button button-secondary" id="idDatabase_Export">Export backup</button>
-                        <button class="button button-secondary" id="idDatabase_Import">Import backup</button>
+                        <button class="button button-secondary" id="idDatabase_Export" data-i18n="exportBackup">Export backup</button>
+                        <button class="button button-secondary" id="idDatabase_Import" data-i18n="importBackup">Import backup</button>
                         <input id="idDatabase_File" type="file" accept=".database" hidden />
-                        <button class="button button-danger-ghost" id="idDatabase_Reset">Delete all data</button>
+                        <button class="button button-danger-ghost" id="idDatabase_Reset" data-i18n="deleteAllData">Delete all data</button>
                     </div>
 
                     <div class="confirm" id="idDatabase_Confirm" hidden>
-                        <p>Delete all watched history? This cannot be undone.</p>
+                        <p data-i18n="deleteConfirm">Delete all watched history? This cannot be undone.</p>
 
                         <div class="button-row">
-                            <button class="button button-danger" id="idDatabase_Resyes">Delete everything</button>
-                            <button class="button button-secondary" id="idDatabase_Resno">Cancel</button>
+                            <button class="button button-danger" id="idDatabase_Resyes" data-i18n="deleteEverything">Delete everything</button>
+                            <button class="button button-secondary" id="idDatabase_Resno" data-i18n="cancel">Cancel</button>
                         </div>
                     </div>
                 </div>
@@ -277,7 +277,7 @@
         </main>
 
         <footer class="footer">
-            <span>Changes are saved automatically.</span>
+            <span data-i18n="savedAutomatically">Changes are saved automatically.</span>
             <span><a href="https://github.com/Jalkhov/youtube-watchmarker-redo" target="_blank" rel="noopener noreferrer">GitHub</a> · <span id="idExtension_Version"></span></span>
         </footer>
 
@@ -285,13 +285,13 @@
             <div class="dialog">
                 <h2 class="dialog-title" id="idLoading_Title">
                     <svg class="icon icon-spin" aria-hidden="true" focusable="false"><use href="#icon-loader-circle"></use></svg>
-                    Working...
+                    <span data-i18n="working">Working...</span>
                 </h2>
 
                 <p class="dialog-message" id="idLoading_Message" aria-live="polite"></p>
                 <p class="dialog-progress" id="idLoading_Progress"></p>
 
-                <button class="button button-primary" id="idLoading_Close">Close</button>
+                <button class="button button-primary" id="idLoading_Close" data-i18n="close">Close</button>
             </div>
         </div>
     </body>

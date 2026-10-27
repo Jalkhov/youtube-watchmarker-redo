@@ -1,0 +1,245 @@
+{
+    "extensionName": {
+        "message": "Watchmarker Redo para YouTube"
+    },
+    "extensionDescription": {
+        "message": "Marca los vídeos de YouTube que ya has visto. Fork comunitario de Watchmarker. Todos los datos se quedan en tu navegador."
+    },
+    "actionTitle": {
+        "message": "Abrir los ajustes de Watchmarker Redo"
+    },
+    "heroSubtitle": {
+        "message": "Elige cuándo se marcan los vídeos de YouTube como vistos y cómo se ven."
+    },
+    "markingRules": {
+        "message": "Reglas de marcado"
+    },
+    "markingRulesHelp": {
+        "message": "Elige qué señales pueden marcar un vídeo como visto. Los cambios se guardan automáticamente."
+    },
+    "conditionBrownavTitle": {
+        "message": "Cuando abro un vídeo"
+    },
+    "conditionBrownavHelp": {
+        "message": "Márcalo como visto en cuanto se abra su página en el navegador."
+    },
+    "conditionBrowhistTitle": {
+        "message": "Cuando aparece en el historial del navegador"
+    },
+    "conditionBrowhistHelp": {
+        "message": "Márcalo cuando Firefox registre el vídeo en tu historial de navegación."
+    },
+    "conditionYouprogTitle": {
+        "message": "Cuando el reproductor informa progreso"
+    },
+    "conditionYouprogHelp": {
+        "message": "Márcalo cuando YouTube reciba progreso de reproducción del reproductor."
+    },
+    "conditionYoubadgeTitle": {
+        "message": "Cuando YouTube muestra su indicador de visto"
+    },
+    "conditionYoubadgeHelp": {
+        "message": "Usa el indicador rojo de visto de YouTube cuando aparezca."
+    },
+    "conditionYouhistTitle": {
+        "message": "Cuando aparece en el historial de YouTube"
+    },
+    "conditionYouhistHelp": {
+        "message": "Márcalo cuando aparezca en tu historial de reproducción de YouTube."
+    },
+    "appearance": {
+        "message": "Apariencia"
+    },
+    "appearanceHelp": {
+        "message": "Elige cómo se ven los vídeos ya vistos en YouTube."
+    },
+    "visualizationFadeoutTitle": {
+        "message": "Atenuar las miniaturas vistas"
+    },
+    "visualizationFadeoutHelp": {
+        "message": "Atenúa las miniaturas de los vídeos que ya has visto."
+    },
+    "visualizationGrayoutTitle": {
+        "message": "Poner en gris las miniaturas vistas"
+    },
+    "visualizationGrayoutHelp": {
+        "message": "Convierte en escala de grises las miniaturas de los vídeos vistos."
+    },
+    "visualizationShowbadgeTitle": {
+        "message": "Mostrar una etiqueta de visto"
+    },
+    "visualizationShowbadgeHelp": {
+        "message": "Añade una pequeña etiqueta a los vídeos que ya has visto."
+    },
+    "visualizationShowdateTitle": {
+        "message": "Incluir la fecha de visualización"
+    },
+    "visualizationShowdateHelp": {
+        "message": "Añade la fecha a la etiqueta de visto. Solo se ve si la etiqueta está activada."
+    },
+    "visualizationHideprogressTitle": {
+        "message": "Ocultar las barras de progreso"
+    },
+    "visualizationHideprogressHelp": {
+        "message": "Oculta la barra de progreso de YouTube en los vídeos que ya has visto."
+    },
+    "importHistory": {
+        "message": "Importar historial"
+    },
+    "importHistoryHelp": {
+        "message": "Completa tu historial con fuentes que ya tienes. La actividad reciente de YouTube también se sincroniza automáticamente cada hora."
+    },
+    "browserHistoryTitle": {
+        "message": "Historial del navegador"
+    },
+    "browserHistoryHelp": {
+        "message": "Busca vídeos de YouTube en el historial de Firefox. Normalmente solo hace falta una vez."
+    },
+    "youtubeHistoryTitle": {
+        "message": "Historial de reproducción de YouTube"
+    },
+    "youtubeHistoryHelp": {
+        "message": "Obtén vídeos de tu cuenta de YouTube. Los historiales grandes pueden tardar."
+    },
+    "lastImport": {
+        "message": "Última importación:"
+    },
+    "importBrowserHistory": {
+        "message": "Importar historial del navegador"
+    },
+    "importYoutubeHistory": {
+        "message": "Importar historial de YouTube"
+    },
+    "searchHistory": {
+        "message": "Buscar en el historial"
+    },
+    "searchHistoryHelp": {
+        "message": "Busca un vídeo en tu historial local de vídeos vistos."
+    },
+    "searchPlaceholder": {
+        "message": "Buscar por título..."
+    },
+    "searchAria": {
+        "message": "Buscar vídeos vistos"
+    },
+    "search": {
+        "message": "Buscar"
+    },
+    "yourData": {
+        "message": "Tus datos"
+    },
+    "yourDataHelp": {
+        "message": "Los vídeos vistos y los ajustes se guardan en este navegador. Exporta una copia antes de desinstalar o restablecer."
+    },
+    "videosTracked": {
+        "message": "vídeos registrados"
+    },
+    "exportBackup": {
+        "message": "Exportar copia"
+    },
+    "importBackup": {
+        "message": "Importar copia"
+    },
+    "deleteAllData": {
+        "message": "Borrar todos los datos"
+    },
+    "deleteConfirm": {
+        "message": "¿Borrar todo el historial de vídeos vistos? No se puede deshacer."
+    },
+    "deleteEverything": {
+        "message": "Borrar todo"
+    },
+    "cancel": {
+        "message": "Cancelar"
+    },
+    "savedAutomatically": {
+        "message": "Los cambios se guardan automáticamente."
+    },
+    "working": {
+        "message": "Procesando..."
+    },
+    "close": {
+        "message": "Cerrar"
+    },
+    "never": {
+        "message": "Nunca"
+    },
+    "searching": {
+        "message": "Buscando..."
+    },
+    "searchFailed": {
+        "message": "No se pudo buscar. Inténtalo de nuevo."
+    },
+    "noVideos": {
+        "message": "No se encontraron vídeos."
+    },
+    "deleteFromHistory": {
+        "message": "Borrar del historial"
+    },
+    "exportingData": {
+        "message": "Exportando tus datos"
+    },
+    "exportFailed": {
+        "message": "No se pudieron exportar tus datos"
+    },
+    "backupExported": {
+        "message": "Copia exportada"
+    },
+    "importingData": {
+        "message": "Importando tus datos"
+    },
+    "backupReadFailed": {
+        "message": "No se pudo leer esa copia"
+    },
+    "backupReadHelp": {
+        "message": "Elige un archivo .database exportado por Watchmarker."
+    },
+    "fileReadFailed": {
+        "message": "No se pudo leer ese archivo"
+    },
+    "fileReadHelp": {
+        "message": "Intenta elegir la copia de nuevo."
+    },
+    "importFailed": {
+        "message": "No se pudo importar esa copia"
+    },
+    "backupImported": {
+        "message": "Copia importada"
+    },
+    "importingBrowserHistory": {
+        "message": "Importando el historial del navegador"
+    },
+    "browserHistoryFailed": {
+        "message": "No se pudo importar el historial del navegador"
+    },
+    "browserHistoryImported": {
+        "message": "Historial del navegador importado"
+    },
+    "importingYoutubeHistory": {
+        "message": "Importando el historial de YouTube"
+    },
+    "youtubeHistoryFailed": {
+        "message": "No se pudo importar el historial de YouTube"
+    },
+    "youtubeHistoryImported": {
+        "message": "Historial de YouTube importado"
+    },
+    "deletingVideo": {
+        "message": "Borrando vídeo"
+    },
+    "deleteFailed": {
+        "message": "No se pudo borrar ese vídeo"
+    },
+    "videoDeleted": {
+        "message": "Vídeo borrado"
+    },
+    "viewOne": {
+        "message": "1 visualización"
+    },
+    "viewMany": {
+        "message": "$1 visualizaciones"
+    },
+    "badgeWatched": {
+        "message": "VISTO"
+    }
+}

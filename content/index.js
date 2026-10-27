@@ -83,13 +83,35 @@ let funcStorageset = async function(strKey, objValue) {
      await chrome.storage.local.set({ [strKey]: String(objValue) });
 };
 
-let objDateformat = new Intl.DateTimeFormat('en', {
+let funcMessage = function(strKey, arrSubstitutions) {
+    let strMessage = chrome.i18n.getMessage(strKey, arrSubstitutions);
+
+    return strMessage === '' ? strKey : strMessage;
+};
+
+let funcLocalize = function() {
+    document.documentElement.lang = chrome.i18n.getUILanguage();
+
+    for (let objElement of document.querySelectorAll('[data-i18n]')) {
+        objElement.textContent = funcMessage(objElement.dataset.i18n);
+    }
+
+    for (let objElement of document.querySelectorAll('[data-i18n-placeholder]')) {
+        objElement.setAttribute('placeholder', funcMessage(objElement.dataset.i18nPlaceholder));
+    }
+
+    for (let objElement of document.querySelectorAll('[data-i18n-aria-label]')) {
+        objElement.setAttribute('aria-label', funcMessage(objElement.dataset.i18nAriaLabel));
+    }
+};
+
+let objDateformat = new Intl.DateTimeFormat(chrome.i18n.getUILanguage(), {
     'month': 'short',
     'day': 'numeric',
     'year': 'numeric',
 });
 
-let objTimeformat = new Intl.DateTimeFormat('en', {
+let objTimeformat = new Intl.DateTimeFormat(chrome.i18n.getUILanguage(), {
     'hour': '2-digit',
     'minute': '2-digit',
     'hourCycle': 'h23',
@@ -105,7 +127,7 @@ let funcTimestamp = function(strValue) {
     let intValue = parseInt(strValue, 10);
 
     if (Number.isFinite(intValue) === false || intValue <= 0) {
-        return 'Never';
+        return funcMessage('never');
     }
 
     return funcFormatdate(intValue);
@@ -144,13 +166,15 @@ let funcDownload = function(strData, strFilename, strType) {
 };
 
 jQuery(window.document).ready(async function() {
+    funcLocalize();
+
     jQuery('#idExtension_Version').text('v' + chrome.runtime.getManifest().version);
 
     await funcRefreshsummary();
 
     jQuery('#idDatabase_Export')
         .on('click', function() {
-            funcLoading('Exporting your data');
+            funcLoading(funcMessage('exportingData'));
 
             objDatabase.postMessage({
                 'strMessage': 'databaseExport',
@@ -162,12 +186,12 @@ jQuery(window.document).ready(async function() {
                 if (objData.strMessage === 'databaseExport') {
                     if (objData.objResponse === null) {
                         jQuery('#idLoading_Message')
-                            .text('Could not export your data')
+                            .text(funcMessage('exportFailed'))
                         ;
 
                     } else if (objData.objResponse !== null) {
                         jQuery('#idLoading_Message')
-                            .text('Backup exported')
+                            .text(funcMessage('backupExported'))
                         ;
 
                         funcDownload(btoa(unescape(encodeURIComponent(JSON.stringify(objData.objResponse.objVideos)))), new Date().getFullYear() + '.' + ('0' + (new Date().getMonth() + 1)).slice(-2) + '.' + ('0' + new Date().getDate()).slice(-2) + '.database', 'application/octet-stream');
@@ -201,7 +225,7 @@ jQuery(window.document).ready(async function() {
                 return;
             }
 
-            funcLoading('Importing your data');
+            funcLoading(funcMessage('importingData'));
 
             let objFilereader = new FileReader();
 
@@ -216,15 +240,15 @@ jQuery(window.document).ready(async function() {
                         },
                     });
                 } catch (objError) {
-                    jQuery('#idLoading_Message').text('Could not read that backup');
-                    jQuery('#idLoading_Progress').text('Choose a .database file exported by Watchmarker.');
+                    jQuery('#idLoading_Message').text(funcMessage('backupReadFailed'));
+                    jQuery('#idLoading_Progress').text(funcMessage('backupReadHelp'));
                     jQuery('#idLoading_Close').removeClass('disabled');
                 }
             };
 
             objFilereader.onerror = function() {
-                jQuery('#idLoading_Message').text('Could not read that file');
-                jQuery('#idLoading_Progress').text('Try choosing the backup again.');
+                jQuery('#idLoading_Message').text(funcMessage('fileReadFailed'));
+                jQuery('#idLoading_Progress').text(funcMessage('fileReadHelp'));
                 jQuery('#idLoading_Close').removeClass('disabled');
             };
 
@@ -237,12 +261,12 @@ jQuery(window.document).ready(async function() {
                 if (objData.strMessage === 'databaseImport') {
                     if (objData.objResponse === null) {
                         jQuery('#idLoading_Message')
-                            .text('Could not import that backup')
+                            .text(funcMessage('importFailed'))
                         ;
 
                     } else if (objData.objResponse !== null) {
                         jQuery('#idLoading_Message')
-                            .text('Backup imported')
+                            .text(funcMessage('backupImported'))
                         ;
 
                     }
@@ -293,7 +317,7 @@ jQuery(window.document).ready(async function() {
 
     jQuery('#idHistory_Synchronize')
         .on('click', function() {
-            funcLoading('Importing browser history');
+            funcLoading(funcMessage('importingBrowserHistory'));
 
             objHistory.postMessage({
                 'strMessage': 'historySynchronize',
@@ -307,12 +331,12 @@ jQuery(window.document).ready(async function() {
                 if (objData.strMessage === 'historySynchronize') {
                     if (objData.objResponse === null) {
                         jQuery('#idLoading_Message')
-                            .text('Could not import browser history')
+                            .text(funcMessage('browserHistoryFailed'))
                         ;
 
                     } else if (objData.objResponse !== null) {
                         jQuery('#idLoading_Message')
-                            .text('Browser history imported')
+                            .text(funcMessage('browserHistoryImported'))
                         ;
 
                     }
@@ -333,7 +357,7 @@ jQuery(window.document).ready(async function() {
 
     jQuery('#idYoutube_Synchronize')
         .on('click', function() {
-            funcLoading('Importing YouTube history');
+            funcLoading(funcMessage('importingYoutubeHistory'));
 
             objYoutube.postMessage({
                 'strMessage': 'youtubeSynchronize',
@@ -347,12 +371,12 @@ jQuery(window.document).ready(async function() {
                 if (objData.strMessage === 'youtubeSynchronize') {
                     if (objData.objResponse === null) {
                         jQuery('#idLoading_Message')
-                            .text('Could not import YouTube history')
+                            .text(funcMessage('youtubeHistoryFailed'))
                         ;
 
                     } else if (objData.objResponse !== null) {
                         jQuery('#idLoading_Message')
-                            .text('YouTube history imported')
+                            .text(funcMessage('youtubeHistoryImported'))
                         ;
 
                     }
@@ -445,7 +469,7 @@ jQuery(window.document).ready(async function() {
                 .end()
             ;
 
-            jQuery('#idSearch_Status').text('Searching...');
+            jQuery('#idSearch_Status').text(funcMessage('searching'));
 
             objSearch.postMessage({
                 'strMessage': 'searchLookup',
@@ -461,7 +485,7 @@ jQuery(window.document).ready(async function() {
                 if (objData.strMessage === 'searchLookup') {
                     if (objData.objResponse === null) {
                         funcSearchidle();
-                        jQuery('#idSearch_Status').text('Could not search. Try again.');
+                        jQuery('#idSearch_Status').text(funcMessage('searchFailed'));
                         return;
                     }
 
@@ -473,7 +497,7 @@ jQuery(window.document).ready(async function() {
                     }
 
                     if ((jQuery('#idSearch_Lookup').data('intSkip') === 0) && (objData.objResponse.objVideos.length === 0)) {
-                        jQuery('#idSearch_Status').text('No videos found.');
+                        jQuery('#idSearch_Status').text(funcMessage('noVideos'));
                     }
 
                     for (let objVideo of objData.objResponse.objVideos) {
@@ -510,15 +534,15 @@ jQuery(window.document).ready(async function() {
 
                         objBody.append(jQuery('<div></div>')
                             .addClass('result-meta')
-                            .text(funcFormatdate(objVideo.intTimestamp) + ' · ' + objVideo.intCount + (objVideo.intCount == 1 ? ' view' : ' views'))
+                            .text(funcFormatdate(objVideo.intTimestamp) + ' · ' + (objVideo.intCount == 1 ? funcMessage('viewOne') : funcMessage('viewMany', [String(objVideo.intCount)])))
                         );
 
                         let objDelete = jQuery('<button></button>')
                             .addClass('icon-button')
                             .attr({
                                 'type': 'button',
-                                'aria-label': 'Delete from history',
-                                'title': 'Delete from history',
+                                'aria-label': funcMessage('deleteFromHistory'),
+                                'title': funcMessage('deleteFromHistory'),
                             })
                             .append(jQuery(document.createElementNS('http://www.w3.org/2000/svg', 'svg'))
                                 .addClass('icon')
@@ -533,7 +557,7 @@ jQuery(window.document).ready(async function() {
                             .on('click', function() {
                                 objPendingdelete = jQuery(this).closest('.result');
 
-                                funcLoading('Deleting video');
+                                funcLoading(funcMessage('deletingVideo'));
 
                                 objSearch.postMessage({
                                     'strMessage': 'searchDelete',
@@ -572,12 +596,12 @@ jQuery(window.document).ready(async function() {
                 } else if (objData.strMessage === 'searchDelete') {
                     if (objData.objResponse === null) {
                         jQuery('#idLoading_Message')
-                            .text('Could not delete that video')
+                            .text(funcMessage('deleteFailed'))
                         ;
 
                     } else if (objData.objResponse !== null) {
                         jQuery('#idLoading_Message')
-                            .text('Video deleted')
+                            .text(funcMessage('videoDeleted'))
                         ;
 
                         if (objPendingdelete !== null) {

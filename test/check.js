@@ -38,6 +38,30 @@ assert(manifest.background.scripts.includes('background.js') === true, 'backgrou
 assert(manifest.permissions.includes('webRequestBlocking') === false, 'webRequestBlocking is unused and must not be requested');
 assert(manifest.browser_specific_settings.gecko.data_collection_permissions.required.includes('none') === true, 'AMO requires data_collection_permissions');
 
+const locales = {};
+
+for (const strLocale of ['en', 'es']) {
+    locales[strLocale] = JSON.parse(fs.readFileSync(path.join(root, '_locales', strLocale, 'messages.json'), 'utf8'));
+}
+
+assert(manifest.default_locale === 'en', 'default_locale must be en');
+assert(Object.keys(locales.en).sort().join() === Object.keys(locales.es).sort().join(), 'en and es locale keys must match');
+
+for (const strField of ['name', 'description']) {
+    assert(/^__MSG_[A-Za-z0-9_]+__$/.test(manifest[strField]) === true, strField + ' must be localized');
+}
+
+assert(/^__MSG_[A-Za-z0-9_]+__$/.test(manifest.action.default_title) === true, 'action.default_title must be localized');
+
+for (const strValue of [manifest.name, manifest.description, manifest.action.default_title]) {
+    const strKey = strValue.slice(6, -2);
+    assert(locales.en[strKey] !== undefined && locales.es[strKey] !== undefined, 'missing manifest locale key: ' + strKey);
+}
+
+for (const objMatch of html.matchAll(/data-i18n(?:-placeholder|-aria-label)?="([^"]+)"/g)) {
+    assert(locales.en[objMatch[1]] !== undefined && locales.es[objMatch[1]] !== undefined, 'missing UI locale key: ' + objMatch[1]);
+}
+
 const symbols = new Set([...html.matchAll(/<symbol id="([^"]+)"/g)].map(function(objMatch) {
     return objMatch[1];
 }));

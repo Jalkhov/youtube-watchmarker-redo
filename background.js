@@ -5,6 +5,8 @@ if (typeof importScripts === 'function') {
     importScripts('idb.js');
 }
 
+let strBadgewatched = chrome.i18n.getMessage('badgeWatched') || 'WATCHED';
+
 let funcStorageget = async function(strKey) {
     let objValue = await chrome.storage.local.get(strKey);
 
@@ -1158,11 +1160,11 @@ let objReady = (async function() {
     }
 
     if ((await funcStorageget('extensions.Youwatch.Stylesheet.strShowbadge') === null) || ((await funcStorageget('extensions.Youwatch.Stylesheet.strShowbadge')).indexOf('do not modify') === -1)) {
-        await funcStorageset('extensions.Youwatch.Stylesheet.strShowbadge', '.youwatch-mark::after { background-color:#000000; border-radius:2px; color:#FFFFFF; content:"WATCHED"; font-size:11px; left:4px; opacity:0.8; padding:3px 4px 3px 4px; position:absolute; top:4px; }');
+        await funcStorageset('extensions.Youwatch.Stylesheet.strShowbadge', '.youwatch-mark::after { background-color:#000000; border-radius:2px; color:#FFFFFF; content:"' + strBadgewatched + '"; font-size:11px; left:4px; opacity:0.8; padding:3px 4px 3px 4px; position:absolute; top:4px; }');
     }
 
     if ((await funcStorageget('extensions.Youwatch.Stylesheet.strShowdate') === null) || ((await funcStorageget('extensions.Youwatch.Stylesheet.strShowdate')).indexOf('do not modify') === -1)) {
-        await funcStorageset('extensions.Youwatch.Stylesheet.strShowdate', '.youwatch-mark::after { content:"WATCHED" attr(watchdate); white-space:nowrap; }');
+        await funcStorageset('extensions.Youwatch.Stylesheet.strShowdate', '.youwatch-mark::after { content:"' + strBadgewatched + '" attr(watchdate); white-space:nowrap; }');
     }
 
     if ((await funcStorageget('extensions.Youwatch.Stylesheet.strHideprogress') === null) || ((await funcStorageget('extensions.Youwatch.Stylesheet.strHideprogress')).indexOf('do not modify') === -1)) {

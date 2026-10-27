@@ -6,6 +6,12 @@ let objObservers = new WeakMap();
 let objPending = {};
 let intRetry = null;
 
+let objWatchdateformat = new Intl.DateTimeFormat(chrome.i18n.getUILanguage(), {
+    'year': 'numeric',
+    'month': '2-digit',
+    'day': '2-digit',
+});
+
 let funcRetry = function() {
     if (intRetry !== null) {
         return;
@@ -95,7 +101,7 @@ let mark = function(objVideo, strIdent) {
         objVideo.classList.add('youwatch-mark');
 
         if (intWatchdate[strIdent] !== 0) {
-            objVideo.setAttribute('watchdate', ' - ' + new Date(intWatchdate[strIdent]).toISOString().split('T')[0].split('-').join('.'));
+            objVideo.setAttribute('watchdate', ' - ' + objWatchdateformat.format(new Date(intWatchdate[strIdent])));
         }
 
     } else if ((intWatchdate.hasOwnProperty(strIdent) !== true) && (objVideo.classList.contains('youwatch-mark') !== false)) {
