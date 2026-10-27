@@ -31,6 +31,6 @@
     "release_notes": {
       "en-US": "5.2.1\n\n- New orange icon (film strip and play button) to distinguish the fork from the original Watchmarker.\n- Added 32, 64 and 128 px icon variants.\n- No functional changes."
     },
-    "approval_notes": "Community fork of Watchmarker for Youtube (GPL-3.0), based on the 5.1.0 source. No remote code, no eval, no telemetry and no developer server. All data stays in local storage and IndexedDB; the extension only talks to youtube.com and m.youtube.com with the user's session. The bundled minified libraries (jQuery 3.7.1, Moment 2.30.1, Bootstrap 5.3.7, download.js 4.21, idb 8.0.3) are unmodified upstream release builds; UI icons are inline Lucide 1.62.0 SVGs. Versions, licenses and official URLs are documented in THIRD_PARTY.md. Full human-readable source: https://github.com/Jalkhov/youtube-watchmarker-redo"
+    "approval_notes": "Community fork of Watchmarker for Youtube (GPL-3.0), based on the 5.1.0 source. No remote code, no eval, no telemetry and no developer server. All data stays in local storage and IndexedDB; the extension only talks to youtube.com and m.youtube.com with the user's session. The bundled minified libraries (jQuery 3.7.1, Moment 2.30.1, download.js 4.21, idb 8.0.3) are unmodified upstream release builds; UI icons are inline Lucide 1.62.0 SVGs. Versions, licenses and official URLs are documented in THIRD_PARTY.md. Full human-readable source: https://github.com/Jalkhov/youtube-watchmarker-redo"
   }
 }

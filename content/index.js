@@ -83,40 +83,39 @@ let funcStorageset = async function(strKey, objValue) {
      await chrome.storage.local.set({ [strKey]: String(objValue) });
 };
 
-jQuery(window.document).ready(async function() {
-    jQuery('html')
-        .attr({
-            'data-bs-theme': window.matchMedia('(prefers-color-scheme: dark)').matches === true ? 'dark' : '',
-        })
-    ;
+let funcTimestamp = function(strValue) {
+    let intValue = parseInt(strValue, 10);
 
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(objEvent) {
-        jQuery('html')
-            .attr({
-                'data-bs-theme': window.matchMedia('(prefers-color-scheme: dark)').matches === true ? 'dark' : '',
-            })
-        ;
-    });
+    if (Number.isFinite(intValue) === false || intValue <= 0) {
+        return 'Never';
+    }
+
+    return moment(intValue).format('MMM D, YYYY · HH:mm');
+};
+
+let funcRefreshsummary = async function() {
+    let intSize = parseInt(await funcStorageget('extensions.Youwatch.Database.intSize'), 10);
+
+    jQuery('#idDatabase_Size').text(Number.isFinite(intSize) ? intSize.toLocaleString() : '0');
+    jQuery('#idHistory_Timestamp').text(funcTimestamp(await funcStorageget('extensions.Youwatch.History.intTimestamp')));
+    jQuery('#idYoutube_Timestamp').text(funcTimestamp(await funcStorageget('extensions.Youwatch.Youtube.intTimestamp')));
+};
+
+let funcLoading = function(strMessage, strProgress) {
+    jQuery('#idLoading_Container').addClass('is-open');
+    jQuery('#idLoading_Message').text(strMessage);
+    jQuery('#idLoading_Progress').text(strProgress === undefined ? '...' : strProgress);
+    jQuery('#idLoading_Close').addClass('disabled');
+};
+
+jQuery(window.document).ready(async function() {
+    jQuery('#idExtension_Version').text('v' + chrome.runtime.getManifest().version);
+
+    await funcRefreshsummary();
 
     jQuery('#idDatabase_Export')
         .on('click', function() {
-            jQuery('#idLoading_Container')
-                .css({
-                    'display': 'block',
-                })
-            ;
-
-            jQuery('#idLoading_Message')
-                .text('exporting database')
-            ;
-
-            jQuery('#idLoading_Progress')
-                .text('...')
-            ;
-
-            jQuery('#idLoading_Close')
-                .addClass('disabled')
-            ;
+            funcLoading('Exporting your data');
 
             objDatabase.postMessage({
                 'strMessage': 'databaseExport',
@@ -128,12 +127,12 @@ jQuery(window.document).ready(async function() {
                 if (objData.strMessage === 'databaseExport') {
                     if (objData.objResponse === null) {
                         jQuery('#idLoading_Message')
-                            .text('error exporting database')
+                            .text('Could not export your data')
                         ;
 
                     } else if (objData.objResponse !== null) {
                         jQuery('#idLoading_Message')
-                            .text('finished exporting database')
+                            .text('Backup exported')
                         ;
 
                         download(btoa(unescape(encodeURIComponent(JSON.stringify(objData.objResponse.objVideos)))), new Date().getFullYear() + '.' + ('0' + (new Date().getMonth() + 1)).slice(-2) + '.' + ('0' + new Date().getDate()).slice(-2) + '.database', 'application/octet-stream');
@@ -153,54 +152,62 @@ jQuery(window.document).ready(async function() {
         })
     ;
 
-    jQuery('#idDatabase_Import').find('input')
+    jQuery('#idDatabase_Import')
+        .on('click', function() {
+            jQuery('#idDatabase_File').trigger('click');
+        })
+    ;
+
+    jQuery('#idDatabase_File')
         .on('change', function() {
-            jQuery('#idLoading_Container')
-                .css({
-                    'display': 'block',
-                })
-            ;
+            let objFile = this.files[0];
 
-            jQuery('#idLoading_Message')
-                .text('importing database')
-            ;
+            if (objFile === undefined) {
+                return;
+            }
 
-            jQuery('#idLoading_Progress')
-                .text('...')
-            ;
-
-            jQuery('#idLoading_Close')
-                .addClass('disabled')
-            ;
+            funcLoading('Importing your data');
 
             let objFilereader = new FileReader();
 
             objFilereader.onload = function(objEvent) {
-                objDatabase.postMessage({
-                    'strMessage': 'databaseImport',
-                    'objRequest': {
-                        'objVideos': JSON.parse(decodeURIComponent(escape(atob(objEvent.target.result)))),
-                    },
-                });
+                try {
+                    let objVideos = JSON.parse(decodeURIComponent(escape(atob(objEvent.target.result))));
+
+                    objDatabase.postMessage({
+                        'strMessage': 'databaseImport',
+                        'objRequest': {
+                            'objVideos': objVideos,
+                        },
+                    });
+                } catch (objError) {
+                    jQuery('#idLoading_Message').text('Could not read that backup');
+                    jQuery('#idLoading_Progress').text('Choose a .database file exported by Watchmarker.');
+                    jQuery('#idLoading_Close').removeClass('disabled');
+                }
             };
 
-            if (jQuery('#idDatabase_Import').find('input').get(0).files !== undefined) {
-                if (jQuery('#idDatabase_Import').find('input').get(0).files.length === 1) {
-                    objFilereader.readAsText(jQuery('#idDatabase_Import').find('input').get(0).files[0], 'utf-8');
-                }
-            }
+            objFilereader.onerror = function() {
+                jQuery('#idLoading_Message').text('Could not read that file');
+                jQuery('#idLoading_Progress').text('Try choosing the backup again.');
+                jQuery('#idLoading_Close').removeClass('disabled');
+            };
+
+            objFilereader.readAsText(objFile, 'utf-8');
+
+            this.value = '';
         })
         .each(function() {
             objDatabase.onMessage.addListener(function(objData) {
                 if (objData.strMessage === 'databaseImport') {
                     if (objData.objResponse === null) {
                         jQuery('#idLoading_Message')
-                            .text('error importing database')
+                            .text('Could not import that backup')
                         ;
 
                     } else if (objData.objResponse !== null) {
                         jQuery('#idLoading_Message')
-                            .text('finished importing database')
+                            .text('Backup imported')
                         ;
 
                     }
@@ -221,17 +228,15 @@ jQuery(window.document).ready(async function() {
 
     jQuery('#idDatabase_Reset')
         .on('click', function() {
-            jQuery(this)
-                .css({
-                    'display': 'none',
-                })
-            ;
+            jQuery('#idDatabase_Reset').attr('hidden', true);
+            jQuery('#idDatabase_Confirm').removeAttr('hidden');
+        })
+    ;
 
-            jQuery('#idDatabase_Resyes').closest('.input-group')
-                .css({
-                    'display': 'inline',
-                })
-            ;
+    jQuery('#idDatabase_Resno')
+        .on('click', function() {
+            jQuery('#idDatabase_Confirm').attr('hidden', true);
+            jQuery('#idDatabase_Reset').removeAttr('hidden');
         })
     ;
 
@@ -251,29 +256,9 @@ jQuery(window.document).ready(async function() {
         })
     ;
 
-    jQuery('#idDatabase_Size')
-        .text(parseInt(await funcStorageget('extensions.Youwatch.Database.intSize')))
-    ;
-
     jQuery('#idHistory_Synchronize')
         .on('click', function() {
-            jQuery('#idLoading_Container')
-                .css({
-                    'display': 'block',
-                })
-            ;
-
-            jQuery('#idLoading_Message')
-                .text('synchronizing history')
-            ;
-
-            jQuery('#idLoading_Progress')
-                .text('...')
-            ;
-
-            jQuery('#idLoading_Close')
-                .addClass('disabled')
-            ;
+            funcLoading('Importing browser history');
 
             objHistory.postMessage({
                 'strMessage': 'historySynchronize',
@@ -287,12 +272,12 @@ jQuery(window.document).ready(async function() {
                 if (objData.strMessage === 'historySynchronize') {
                     if (objData.objResponse === null) {
                         jQuery('#idLoading_Message')
-                            .text('error synchronizing history')
+                            .text('Could not import browser history')
                         ;
 
                     } else if (objData.objResponse !== null) {
                         jQuery('#idLoading_Message')
-                            .text('finished synchronizing history')
+                            .text('Browser history imported')
                         ;
 
                     }
@@ -311,29 +296,9 @@ jQuery(window.document).ready(async function() {
         })
     ;
 
-    jQuery('#idHistory_Timestamp')
-        .text(moment(parseInt(await funcStorageget('extensions.Youwatch.History.intTimestamp'))).format('YYYY.MM.DD - HH:mm:ss'))
-    ;
-
     jQuery('#idYoutube_Synchronize')
         .on('click', function() {
-            jQuery('#idLoading_Container')
-                .css({
-                    'display': 'block',
-                })
-            ;
-
-            jQuery('#idLoading_Message')
-                .text('synchronizing youtube')
-            ;
-
-            jQuery('#idLoading_Progress')
-                .text('...')
-            ;
-
-            jQuery('#idLoading_Close')
-                .addClass('disabled')
-            ;
+            funcLoading('Importing YouTube history');
 
             objYoutube.postMessage({
                 'strMessage': 'youtubeSynchronize',
@@ -347,12 +312,12 @@ jQuery(window.document).ready(async function() {
                 if (objData.strMessage === 'youtubeSynchronize') {
                     if (objData.objResponse === null) {
                         jQuery('#idLoading_Message')
-                            .text('error synchronizing youtube')
+                            .text('Could not import YouTube history')
                         ;
 
                     } else if (objData.objResponse !== null) {
                         jQuery('#idLoading_Message')
-                            .text('finished synchronizing youtube')
+                            .text('YouTube history imported')
                         ;
 
                     }
@@ -371,339 +336,16 @@ jQuery(window.document).ready(async function() {
         })
     ;
 
-    jQuery('#idYoutube_Timestamp')
-        .text(moment(parseInt(await funcStorageget('extensions.Youwatch.Youtube.intTimestamp'))).format('YYYY.MM.DD - HH:mm:ss'))
-    ;
+    for (let objElement of jQuery('input[data-setting]')) {
+        let objInput = jQuery(objElement);
+        let strKey = objInput.data('setting');
 
-    jQuery('#idCondition_Brownav')
-        .on('click', async function() {
-            await funcStorageset('extensions.Youwatch.Condition.boolBrownav', await funcStorageget('extensions.Youwatch.Condition.boolBrownav') === String(false));
+        objInput.prop('checked', await funcStorageget(strKey) === String(true));
 
-            jQuery(this)
-                .find('.icon')
-                    .eq(0)
-                        .css({
-                            'display': await funcStorageget('extensions.Youwatch.Condition.boolBrownav') === String(true) ? 'none' : 'block',
-                        })
-                    .end()
-                    .eq(1)
-                        .css({
-                            'display': await funcStorageget('extensions.Youwatch.Condition.boolBrownav') === String(true) ? 'block' : 'none',
-                        })
-                    .end()
-                .end()
-            ;
-        })
-        .find('.icon')
-            .eq(0)
-                .css({
-                    'display': await funcStorageget('extensions.Youwatch.Condition.boolBrownav') === String(true) ? 'none' : 'block',
-                })
-            .end()
-            .eq(1)
-                .css({
-                    'display': await funcStorageget('extensions.Youwatch.Condition.boolBrownav') === String(true) ? 'block' : 'none',
-                })
-            .end()
-        .end()
-    ;
-
-    jQuery('#idCondition_Browhist')
-        .on('click', async function() {
-            await funcStorageset('extensions.Youwatch.Condition.boolBrowhist', await funcStorageget('extensions.Youwatch.Condition.boolBrowhist') === String(false));
-
-            jQuery(this)
-                .find('.icon')
-                    .eq(0)
-                        .css({
-                            'display': await funcStorageget('extensions.Youwatch.Condition.boolBrowhist') === String(true) ? 'none' : 'block',
-                        })
-                    .end()
-                    .eq(1)
-                        .css({
-                            'display': await funcStorageget('extensions.Youwatch.Condition.boolBrowhist') === String(true) ? 'block' : 'none',
-                        })
-                    .end()
-                .end()
-            ;
-        })
-        .find('.icon')
-            .eq(0)
-                .css({
-                    'display': await funcStorageget('extensions.Youwatch.Condition.boolBrowhist') === String(true) ? 'none' : 'block',
-                })
-            .end()
-            .eq(1)
-                .css({
-                    'display': await funcStorageget('extensions.Youwatch.Condition.boolBrowhist') === String(true) ? 'block' : 'none',
-                })
-            .end()
-        .end()
-    ;
-
-    jQuery('#idCondition_Youprog')
-        .on('click', async function() {
-            await funcStorageset('extensions.Youwatch.Condition.boolYouprog', await funcStorageget('extensions.Youwatch.Condition.boolYouprog') === String(false));
-
-            jQuery(this)
-                .find('.icon')
-                    .eq(0)
-                        .css({
-                            'display': await funcStorageget('extensions.Youwatch.Condition.boolYouprog') === String(true) ? 'none' : 'block',
-                        })
-                    .end()
-                    .eq(1)
-                        .css({
-                            'display': await funcStorageget('extensions.Youwatch.Condition.boolYouprog') === String(true) ? 'block' : 'none',
-                        })
-                    .end()
-                .end()
-            ;
-        })
-        .find('.icon')
-            .eq(0)
-                .css({
-                    'display': await funcStorageget('extensions.Youwatch.Condition.boolYouprog') === String(true) ? 'none' : 'block',
-                })
-            .end()
-            .eq(1)
-                .css({
-                    'display': await funcStorageget('extensions.Youwatch.Condition.boolYouprog') === String(true) ? 'block' : 'none',
-                })
-            .end()
-        .end()
-    ;
-
-    jQuery('#idCondition_Youbadge')
-        .on('click', async function() {
-            await funcStorageset('extensions.Youwatch.Condition.boolYoubadge', await funcStorageget('extensions.Youwatch.Condition.boolYoubadge') === String(false));
-
-            jQuery(this)
-                .find('.icon')
-                    .eq(0)
-                        .css({
-                            'display': await funcStorageget('extensions.Youwatch.Condition.boolYoubadge') === String(true) ? 'none' : 'block',
-                        })
-                    .end()
-                    .eq(1)
-                        .css({
-                            'display': await funcStorageget('extensions.Youwatch.Condition.boolYoubadge') === String(true) ? 'block' : 'none',
-                        })
-                    .end()
-                .end()
-            ;
-        })
-        .find('.icon')
-            .eq(0)
-                .css({
-                    'display': await funcStorageget('extensions.Youwatch.Condition.boolYoubadge') === String(true) ? 'none' : 'block',
-                })
-            .end()
-            .eq(1)
-                .css({
-                    'display': await funcStorageget('extensions.Youwatch.Condition.boolYoubadge') === String(true) ? 'block' : 'none',
-                })
-            .end()
-        .end()
-    ;
-
-    jQuery('#idCondition_Youhist')
-        .on('click', async function() {
-            await funcStorageset('extensions.Youwatch.Condition.boolYouhist', await funcStorageget('extensions.Youwatch.Condition.boolYouhist') === String(false));
-
-            jQuery(this)
-                .find('.icon')
-                    .eq(0)
-                        .css({
-                            'display': await funcStorageget('extensions.Youwatch.Condition.boolYouhist') === String(true) ? 'none' : 'block',
-                        })
-                    .end()
-                    .eq(1)
-                        .css({
-                            'display': await funcStorageget('extensions.Youwatch.Condition.boolYouhist') === String(true) ? 'block' : 'none',
-                        })
-                    .end()
-                .end()
-            ;
-        })
-        .find('.icon')
-            .eq(0)
-                .css({
-                    'display': await funcStorageget('extensions.Youwatch.Condition.boolYouhist') === String(true) ? 'none' : 'block',
-                })
-            .end()
-            .eq(1)
-                .css({
-                    'display': await funcStorageget('extensions.Youwatch.Condition.boolYouhist') === String(true) ? 'block' : 'none',
-                })
-            .end()
-        .end()
-    ;
-
-    jQuery('#idVisualization_Fadeout')
-        .on('click', async function() {
-            await funcStorageset('extensions.Youwatch.Visualization.boolFadeout', await funcStorageget('extensions.Youwatch.Visualization.boolFadeout') === String(false));
-
-            jQuery(this)
-                .find('.icon')
-                    .eq(0)
-                        .css({
-                            'display': await funcStorageget('extensions.Youwatch.Visualization.boolFadeout') === String(true) ? 'none' : 'block',
-                        })
-                    .end()
-                    .eq(1)
-                        .css({
-                            'display': await funcStorageget('extensions.Youwatch.Visualization.boolFadeout') === String(true) ? 'block' : 'none',
-                        })
-                    .end()
-                .end()
-            ;
-        })
-        .find('.icon')
-            .eq(0)
-                .css({
-                    'display': await funcStorageget('extensions.Youwatch.Visualization.boolFadeout') === String(true) ? 'none' : 'block',
-                })
-            .end()
-            .eq(1)
-                .css({
-                    'display': await funcStorageget('extensions.Youwatch.Visualization.boolFadeout') === String(true) ? 'block' : 'none',
-                })
-            .end()
-        .end()
-    ;
-
-    jQuery('#idVisualization_Grayout')
-        .on('click', async function() {
-            await funcStorageset('extensions.Youwatch.Visualization.boolGrayout', await funcStorageget('extensions.Youwatch.Visualization.boolGrayout') === String(false));
-
-            jQuery(this)
-                .find('.icon')
-                    .eq(0)
-                        .css({
-                            'display': await funcStorageget('extensions.Youwatch.Visualization.boolGrayout') === String(true) ? 'none' : 'block',
-                        })
-                    .end()
-                    .eq(1)
-                        .css({
-                            'display': await funcStorageget('extensions.Youwatch.Visualization.boolGrayout') === String(true) ? 'block' : 'none',
-                        })
-                    .end()
-                .end()
-            ;
-        })
-        .find('.icon')
-            .eq(0)
-                .css({
-                    'display': await funcStorageget('extensions.Youwatch.Visualization.boolGrayout') === String(true) ? 'none' : 'block',
-                })
-            .end()
-            .eq(1)
-                .css({
-                    'display': await funcStorageget('extensions.Youwatch.Visualization.boolGrayout') === String(true) ? 'block' : 'none',
-                })
-            .end()
-        .end()
-    ;
-
-    jQuery('#idVisualization_Showbadge')
-        .on('click', async function() {
-            await funcStorageset('extensions.Youwatch.Visualization.boolShowbadge', await funcStorageget('extensions.Youwatch.Visualization.boolShowbadge') === String(false));
-
-            jQuery(this)
-                .find('.icon')
-                    .eq(0)
-                        .css({
-                            'display': await funcStorageget('extensions.Youwatch.Visualization.boolShowbadge') === String(true) ? 'none' : 'block',
-                        })
-                    .end()
-                    .eq(1)
-                        .css({
-                            'display': await funcStorageget('extensions.Youwatch.Visualization.boolShowbadge') === String(true) ? 'block' : 'none',
-                        })
-                    .end()
-                .end()
-            ;
-        })
-        .find('.icon')
-            .eq(0)
-                .css({
-                    'display': await funcStorageget('extensions.Youwatch.Visualization.boolShowbadge') === String(true) ? 'none' : 'block',
-                })
-            .end()
-            .eq(1)
-                .css({
-                    'display': await funcStorageget('extensions.Youwatch.Visualization.boolShowbadge') === String(true) ? 'block' : 'none',
-                })
-            .end()
-        .end()
-    ;
-
-    jQuery('#idVisualization_Showdate')
-        .on('click', async function() {
-            await funcStorageset('extensions.Youwatch.Visualization.boolShowdate', await funcStorageget('extensions.Youwatch.Visualization.boolShowdate') === String(false));
-
-            jQuery(this)
-                .find('.icon')
-                    .eq(0)
-                        .css({
-                            'display': await funcStorageget('extensions.Youwatch.Visualization.boolShowdate') === String(true) ? 'none' : 'block',
-                        })
-                    .end()
-                    .eq(1)
-                        .css({
-                            'display': await funcStorageget('extensions.Youwatch.Visualization.boolShowdate') === String(true) ? 'block' : 'none',
-                        })
-                    .end()
-                .end()
-            ;
-        })
-        .find('.icon')
-            .eq(0)
-                .css({
-                    'display': await funcStorageget('extensions.Youwatch.Visualization.boolShowdate') === String(true) ? 'none' : 'block',
-                })
-            .end()
-            .eq(1)
-                .css({
-                    'display': await funcStorageget('extensions.Youwatch.Visualization.boolShowdate') === String(true) ? 'block' : 'none',
-                })
-            .end()
-        .end()
-    ;
-
-    jQuery('#idVisualization_Hideprogress')
-        .on('click', async function() {
-            await funcStorageset('extensions.Youwatch.Visualization.boolHideprogress', await funcStorageget('extensions.Youwatch.Visualization.boolHideprogress') === String(false));
-
-            jQuery(this)
-                .find('.icon')
-                    .eq(0)
-                        .css({
-                            'display': await funcStorageget('extensions.Youwatch.Visualization.boolHideprogress') === String(true) ? 'none' : 'block',
-                        })
-                    .end()
-                    .eq(1)
-                        .css({
-                            'display': await funcStorageget('extensions.Youwatch.Visualization.boolHideprogress') === String(true) ? 'block' : 'none',
-                        })
-                    .end()
-                .end()
-            ;
-        })
-        .find('.icon')
-            .eq(0)
-                .css({
-                    'display': await funcStorageget('extensions.Youwatch.Visualization.boolHideprogress') === String(true) ? 'none' : 'block',
-                })
-            .end()
-            .eq(1)
-                .css({
-                    'display': await funcStorageget('extensions.Youwatch.Visualization.boolHideprogress') === String(true) ? 'block' : 'none',
-                })
-            .end()
-        .end()
-    ;
+        objInput.on('change', async function() {
+            await funcStorageset(strKey, this.checked);
+        });
+    }
 
     jQuery('#idSearch_Query')
         .on('keydown', function(objEvent) {
@@ -737,6 +379,8 @@ jQuery(window.document).ready(async function() {
         ;
     };
 
+    let objPendingdelete = null;
+
     jQuery('#idSearch_Lookup')
         .data({
             'intSkip' : 0,
@@ -766,6 +410,8 @@ jQuery(window.document).ready(async function() {
                 .end()
             ;
 
+            jQuery('#idSearch_Status').text('Searching...');
+
             objSearch.postMessage({
                 'strMessage': 'searchLookup',
                 'objRequest': {
@@ -780,133 +426,92 @@ jQuery(window.document).ready(async function() {
                 if (objData.strMessage === 'searchLookup') {
                     if (objData.objResponse === null) {
                         funcSearchidle();
+                        jQuery('#idSearch_Status').text('Could not search. Try again.');
                         return;
                     }
 
                     funcSearchidle();
+                    jQuery('#idSearch_Status').text('');
 
                     if (jQuery('#idSearch_Lookup').data('intSkip') === 0) {
-                        jQuery('#idSearch_Results')
-                            .empty()
-                            .css({
-                                'display': 'flex',
-                                'flex-direction': 'column',
-                                'gap': '16px',
-                            })
-                        ;
+                        jQuery('#idSearch_Results').empty();
+                    }
+
+                    if ((jQuery('#idSearch_Lookup').data('intSkip') === 0) && (objData.objResponse.objVideos.length === 0)) {
+                        jQuery('#idSearch_Status').text('No videos found.');
                     }
 
                     for (let objVideo of objData.objResponse.objVideos) {
-                        jQuery('#idSearch_Results')
-                            .append(jQuery('<div></div>')
-                                .css({
-                                    'border': '1px solid var(--bs-border-color)',
-                                    'border-radius': 'var(--bs-border-radius)',
-                                    'display': 'flex',
-                                    'gap': '12px',
-                                    'padding': '12px',
+                        let objResult = jQuery('<div></div>').addClass('result');
+                        let strUrl = 'https://www.youtube.com/watch?v=' + objVideo.strIdent;
+
+                        objResult.append(jQuery('<a></a>')
+                            .attr({
+                                'href': strUrl,
+                                'target': '_blank',
+                                'rel': 'noopener noreferrer',
+                            })
+                            .append(jQuery('<img></img>')
+                                .addClass('result-thumb')
+                                .attr({
+                                    'src': 'https://img.youtube.com/vi/' + objVideo.strIdent + '/mqdefault.jpg',
+                                    'alt': '',
+                                    'loading': 'lazy',
                                 })
-                                .append(jQuery('<div></div>')
-                                    .append(jQuery('<a></a>')
-                                        .attr({
-                                            'href': 'https://www.youtube.com/watch?v=' + objVideo.strIdent,
-                                            'target': '_blank',
-                                        })
-                                        .append(jQuery('<img></img>')
-                                            .attr({
-                                                'src': 'https://img.youtube.com/vi/' + objVideo.strIdent + '/mqdefault.jpg',
-                                            })
-                                            .css({
-                                                'border-radius': 'var(--bs-border-radius)',
-                                                'height': '94px',
-                                                'width': '168px',
-                                            })
-                                        )
-                                    )
-                                )
-                                .append(jQuery('<div></div>')
-                                    .css({
-                                        'flex': '1',
-                                    })
-                                    .append(jQuery('<div></div>')
-                                        .append(jQuery('<a></a>')
-                                            .attr({
-                                                'href': 'https://www.youtube.com/watch?v=' + objVideo.strIdent,
-                                                'target': '_blank',
-                                            })
-                                            .css({
-                                                'color': 'inherit',
-                                                'font-size': '16px',
-                                                'text-decoration': 'none',
-                                            })
-                                            .text(objVideo.strTitle)
-                                        )
-                                    )
-                                    .append(jQuery('<div></div>')
-                                        .css({
-                                            'color': 'var(--bs-secondary-color)',
-                                            'font-size': '13px',
-                                            'margin': '5px 0px 0px 0px',
-                                        })
-                                        .text(moment(objVideo.intTimestamp).format('YYYY.MM.DD - HH:mm'))
-                                    )
-                                    .append(jQuery('<div></div>')
-                                        .css({
-                                            'color': 'var(--bs-secondary-color)',
-                                            'font-size': '13px',
-                                            'margin': '5px 0px 0px 0px',
-                                        })
-                                        .text(objVideo.intCount + ' View' + (objVideo.intCount == 1 ? '' : 's'))
-                                    )
-                                )
-                                .append(jQuery('<div></div>')
-                                    .append(jQuery('<div></div>')
-                                        .css({
-                                            'cursor': 'pointer',
-                                        })
-                                        .append(jQuery(document.createElementNS('http://www.w3.org/2000/svg', 'svg'))
-                                            .addClass('icon')
-                                            .attr({
-                                                'aria-hidden': 'true',
-                                                'focusable': 'false',
-                                            })
-                                            .append(jQuery(document.createElementNS('http://www.w3.org/2000/svg', 'use'))
-                                                .attr('href', '#icon-trash-2')
-                                            )
-                                        )
-                                        .data({
-                                            'strIdent': objVideo.strIdent,
-                                        })
-                                        .on('click', function() {
-                                            jQuery('#idLoading_Container')
-                                                .css({
-                                                    'display': 'block',
-                                                })
-                                            ;
+                            )
+                        );
 
-                                            jQuery('#idLoading_Message')
-                                                .text('deleting video')
-                                            ;
+                        let objBody = jQuery('<div></div>').addClass('result-body');
 
-                                            jQuery('#idLoading_Progress')
-                                                .text('...')
-                                            ;
+                        objBody.append(jQuery('<a></a>')
+                            .addClass('result-title')
+                            .attr({
+                                'href': strUrl,
+                                'target': '_blank',
+                                'rel': 'noopener noreferrer',
+                            })
+                            .text(objVideo.strTitle)
+                        );
 
-                                            jQuery('#idLoading_Close')
-                                                .addClass('disabled')
-                                            ;
+                        objBody.append(jQuery('<div></div>')
+                            .addClass('result-meta')
+                            .text(moment(objVideo.intTimestamp).format('MMM D, YYYY · HH:mm') + ' · ' + objVideo.intCount + (objVideo.intCount == 1 ? ' view' : ' views'))
+                        );
 
-                                            objSearch.postMessage({
-                                                'strMessage': 'searchDelete',
-                                                'objRequest': {
-                                                    'strIdent': jQuery(this).data('strIdent'),
-                                                },
-                                            });
-                                        })
-                                    )
+                        let objDelete = jQuery('<button></button>')
+                            .addClass('icon-button')
+                            .attr({
+                                'type': 'button',
+                                'aria-label': 'Delete from history',
+                                'title': 'Delete from history',
+                            })
+                            .append(jQuery(document.createElementNS('http://www.w3.org/2000/svg', 'svg'))
+                                .addClass('icon')
+                                .attr({
+                                    'aria-hidden': 'true',
+                                    'focusable': 'false',
+                                })
+                                .append(jQuery(document.createElementNS('http://www.w3.org/2000/svg', 'use'))
+                                    .attr('href', '#icon-trash-2')
                                 )
                             )
+                            .on('click', function() {
+                                objPendingdelete = jQuery(this).closest('.result');
+
+                                funcLoading('Deleting video');
+
+                                objSearch.postMessage({
+                                    'strMessage': 'searchDelete',
+                                    'objRequest': {
+                                        'strIdent': objVideo.strIdent,
+                                    },
+                                });
+                            })
                         ;
+
+                        objBody.append(objDelete);
+                        objResult.append(objBody);
+                        jQuery('#idSearch_Results').append(objResult);
                     }
 
                     if (objData.objResponse.objVideos.length === 10) {
@@ -932,14 +537,18 @@ jQuery(window.document).ready(async function() {
                 } else if (objData.strMessage === 'searchDelete') {
                     if (objData.objResponse === null) {
                         jQuery('#idLoading_Message')
-                            .text('error deleting video')
+                            .text('Could not delete that video')
                         ;
 
                     } else if (objData.objResponse !== null) {
                         jQuery('#idLoading_Message')
-                            .text('finished deleting video')
+                            .text('Video deleted')
                         ;
 
+                        if (objPendingdelete !== null) {
+                            objPendingdelete.remove();
+                            objPendingdelete = null;
+                        }
                     }
 
                     jQuery('#idLoading_Close')
@@ -961,7 +570,8 @@ jQuery(window.document).ready(async function() {
 
     jQuery('#idLoading_Close')
         .on('click', function() {
-            window.location.reload();
+            jQuery('#idLoading_Container').removeClass('is-open');
+            funcRefreshsummary();
         })
     ;
 });

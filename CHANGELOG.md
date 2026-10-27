@@ -6,10 +6,13 @@ All dates are UTC. The format follows [Keep a Changelog](https://keepachangelog.
 
 ### Changed
 
+- Replaced the Bootstrap stylesheet with a small custom `content/options.css`.
+- Refreshed the options page: clearer section order and labels, accessible switches, compact search results, and a proper reset confirmation.
 - Options page icons are now inline Lucide SVGs instead of Font Awesome, so the UI no longer downloads an icon font.
 
 ### Removed
 
+- Bootstrap stylesheet (about 232 KB).
 - Font Awesome stylesheet and font files (about 390 KB).
 
 ## [5.2.1] - 2026-10-24

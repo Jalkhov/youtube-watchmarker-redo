@@ -45,6 +45,9 @@ const symbols = new Set([...html.matchAll(/<symbol id="([^"]+)"/g)].map(function
 assert(symbols.size >= 5, 'inline SVG icon sprite is missing symbols');
 assert(html.includes('fontawesome') === false, 'the options page must not reference Font Awesome');
 assert(/fa-(regular|solid|brands)/.test(html) === false, 'the options page must not use Font Awesome classes');
+assert(html.includes('bootstrap') === false, 'the options page must not reference Bootstrap');
+assert(fs.existsSync(path.join(root, 'content/options.css')) === true, 'options.css is missing');
+assert(html.includes('--bs-') === false && optionsJs.includes('--bs-') === false, 'options UI must not use Bootstrap CSS variables');
 assert(optionsJs.includes(".find('i')") === false, 'options JS must target .icon, not generic <i> elements');
 
 for (const objMatch of html.matchAll(/<use href="#([^"]+)"/g)) {
