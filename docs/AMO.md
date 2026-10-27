@@ -13,6 +13,14 @@ Checklist for submitting **Watchmarker Redo for YouTube** to addons.mozilla.org.
 - Privacy policy: set.
 - Developer page: https://addons.mozilla.org/en-US/developers/addon/watchmarker-redo-for-youtube/
 
+## Release policy
+
+Only stable releases are submitted to AMO. Beta builds stay on GitHub pre-releases and are not listed on AMO.
+
+Stable versions use three numeric parts (`5.3.1`). A beta may use a fourth numeric part (`5.3.0.2`) because Firefox and AMO reject letters and hyphens in versions; `5.3.0-beta.1` is invalid.
+
+The 5.3.0.1 (version ID 6630744) and 5.3.0.2 (version ID 6630825) unlisted test versions were deleted on 27 October 2026. Their signed XPIs are no longer available, and AMO keeps only the public 5.2.1 release.
+
 ## 1. Build the package
 
 ```bash

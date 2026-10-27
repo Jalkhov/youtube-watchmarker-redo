@@ -39,6 +39,8 @@ The latest stable release includes the Mozilla-signed XPI for offline installs. 
 
 Beta builds are published as GitHub pre-releases. They are not listed on AMO; install them temporarily or in Developer Edition. The current beta, 5.3.0.2, includes the options page redesign and English/Spanish localization.
 
+Stable releases use three-part versions. A beta may add a fourth numeric component because Firefox and AMO reject letters in versions (`5.3.0-beta.1` is invalid). The next stable release will be `5.3.1`.
+
 ### Temporary
 
 1. Open `about:debugging#/runtime/this-firefox`.

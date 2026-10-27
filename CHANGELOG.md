@@ -21,7 +21,7 @@ Second beta of the options page overhaul. Not listed on AMO.
 
 ## [5.3.0.1] - 2026-10-27
 
-First beta of the options page overhaul. Not submitted to AMO.
+First beta of the options page overhaul. Not listed on AMO; it was uploaded for signing, then removed.
 
 ### Changed
 
