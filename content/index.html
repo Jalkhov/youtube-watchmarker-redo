@@ -15,13 +15,62 @@
         
         <link rel="stylesheet" type="text/css" href="bootstrap.css" />
 
-        <link rel="stylesheet" type="text/css" href="fontawesome.css" />
+        <style>
+            .icon {
+                width: 1em;
+                height: 1em;
+                vertical-align: -0.125em;
+                fill: none;
+                stroke: currentColor;
+                stroke-width: 2;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+            }
+
+            .icon-spin {
+                animation: icon-spin 1s linear infinite;
+                transform-origin: center;
+            }
+
+            @keyframes icon-spin {
+                to {
+                    transform: rotate(360deg);
+                }
+            }
+        </style>
 
         <script type="text/javascript" src="download.js"></script>
 
         <script type="text/javascript" src="index.js"></script>
     </head>
     <body style="cursor:default; line-height:1.1; padding:20px 20px 0px 20px;">
+        <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+            <symbol id="icon-square" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="18" height="18" x="3" y="3" rx="2" />
+            </symbol>
+
+            <symbol id="icon-square-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="18" height="18" x="3" y="3" rx="2" />
+                <path d="m16 9-5.5 5.5L8 12" />
+            </symbol>
+
+            <symbol id="icon-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m21 21-4.34-4.34" />
+                <circle cx="11" cy="11" r="8" />
+            </symbol>
+
+            <symbol id="icon-trash-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10 11v6" />
+                <path d="M14 11v6" />
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
+                <path d="M3 6h18" />
+                <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+            </symbol>
+
+            <symbol id="icon-loader-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+            </symbol>
+        </svg>
         <div class="card" style="margin:0px auto 20px auto; max-width:700px;">
             <div class="card-header">
                 Database
@@ -94,40 +143,40 @@
                 <div class="input-group" style="margin:0px 0px 17px 0px;">
                     <div class="form-control">Mark a video as watched once it has been opened in the browser.</div>
                     <button class="btn btn-primary" id="idCondition_Brownav">
-                        <i class="fa-regular fa-square"></i>
-                        <i class="fa-regular fa-check-square"></i>
+                        <svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-square"></use></svg>
+                        <svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-square-check"></use></svg>
                     </button>
                 </div>
 
                 <div class="input-group" style="margin:0px 0px 17px 0px;">
                     <div class="form-control">Mark a video as watched once it appears in the browser's history.</div>
                     <button class="btn btn-primary" id="idCondition_Browhist">
-                        <i class="fa-regular fa-square"></i>
-                        <i class="fa-regular fa-check-square"></i>
+                        <svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-square"></use></svg>
+                        <svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-square-check"></use></svg>
                     </button>
                 </div>
 
                 <div class="input-group" style="margin:0px 0px 17px 0px;">
                     <div class="form-control">Mark a video as watched once the player reports progress to Youtube.</div>
                     <button class="btn btn-primary" id="idCondition_Youprog">
-                        <i class="fa-regular fa-square"></i>
-                        <i class="fa-regular fa-check-square"></i>
+                        <svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-square"></use></svg>
+                        <svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-square-check"></use></svg>
                     </button>
                 </div>
 
                 <div class="input-group" style="margin:0px 0px 17px 0px;">
                     <div class="form-control">Mark a video as watched once it has the official Youtube watched badge.</div>
                     <button class="btn btn-primary" id="idCondition_Youbadge">
-                        <i class="fa-regular fa-square"></i>
-                        <i class="fa-regular fa-check-square"></i>
+                        <svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-square"></use></svg>
+                        <svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-square-check"></use></svg>
                     </button>
                 </div>
 
                 <div class="input-group" style="margin:0px 0px 0px 0px;">
                     <div class="form-control">Mark a video as watched once it appears in Youtube's watch history.</div>
                     <button class="btn btn-primary" id="idCondition_Youhist">
-                        <i class="fa-regular fa-square"></i>
-                        <i class="fa-regular fa-check-square"></i>
+                        <svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-square"></use></svg>
+                        <svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-square-check"></use></svg>
                     </button>
                 </div>
             </div>
@@ -142,40 +191,40 @@
                 <div class="input-group" style="margin:0px 0px 17px 0px;">
                     <div class="form-control">Mark watched videos by slightly fading the thumbnail out.</div>
                     <button class="btn btn-primary" id="idVisualization_Fadeout">
-                        <i class="fa-regular fa-square"></i>
-                        <i class="fa-regular fa-check-square"></i>
+                        <svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-square"></use></svg>
+                        <svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-square-check"></use></svg>
                     </button>
                 </div>
 
                 <div class="input-group" style="margin:0px 0px 17px 0px;">
                     <div class="form-control">Mark watched videos by converting the thumbnail to grayscale.</div>
                     <button class="btn btn-primary" id="idVisualization_Grayout">
-                        <i class="fa-regular fa-square"></i>
-                        <i class="fa-regular fa-check-square"></i>
+                        <svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-square"></use></svg>
+                        <svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-square-check"></use></svg>
                     </button>
                 </div>
 
                 <div class="input-group" style="margin:0px 0px 17px 0px;">
                     <div class="form-control">Show a textual badge in addition to graying out watched videos.</div>
                     <button class="btn btn-primary" id="idVisualization_Showbadge">
-                        <i class="fa-regular fa-square"></i>
-                        <i class="fa-regular fa-check-square"></i>
+                        <svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-square"></use></svg>
+                        <svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-square-check"></use></svg>
                     </button>
                 </div>
 
                 <div class="input-group" style="margin:0px 0px 17px 0px;">
                     <div class="form-control">Show the date of when the video has been watched in the textual badge.</div>
                     <button class="btn btn-primary" id="idVisualization_Showdate">
-                        <i class="fa-regular fa-square"></i>
-                        <i class="fa-regular fa-check-square"></i>
+                        <svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-square"></use></svg>
+                        <svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-square-check"></use></svg>
                     </button>
                 </div>
 
                 <div class="input-group" style="margin:0px 0px 0px 0px;">
                     <div class="form-control">Hide the progressbar that is being shown underneath watched videos.</div>
                     <button class="btn btn-primary" id="idVisualization_Hideprogress">
-                        <i class="fa-regular fa-square"></i>
-                        <i class="fa-regular fa-check-square"></i>
+                        <svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-square"></use></svg>
+                        <svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-square-check"></use></svg>
                     </button>
                 </div>
             </div>
@@ -190,8 +239,8 @@
                 <div class="input-group" style="margin:0px 0px 17px 0px;">
                     <input class="form-control" id="idSearch_Query" type="text" placeholder="..." />
                     <button class="btn btn-primary" id="idSearch_Lookup">
-                        <i class="fa-solid fa-magnifying-glass" style="display:inline;"></i>
-                        <i class="fa-solid fa-gear fa-spin" style="display:none;"></i>
+                        <svg class="icon" aria-hidden="true" focusable="false" style="display:inline;"><use href="#icon-search"></use></svg>
+                        <svg class="icon icon-spin" aria-hidden="true" focusable="false" style="display:none;"><use href="#icon-loader-circle"></use></svg>
                     </button>
                 </div>
 

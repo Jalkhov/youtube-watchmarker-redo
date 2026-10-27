@@ -19,7 +19,7 @@ Community fork of [Watchmarker for Youtube](https://github.com/sniklaus/youtube-
 ## Highlights
 
 - **Survives Firefox's event-page lifecycle.** Listeners are registered synchronously, IndexedDB opens lazily, the options page reconnects its ports and lookups are retried. This fixes the intermittent failure that required disabling and re-enabling the extension.
-- **Self-contained.** Restores the bundled assets that were missing from the repository: `idb.js`, jQuery, Moment, Bootstrap, FontAwesome and download.js.
+- **Self-contained.** Restores the bundled assets that were missing from the repository: `idb.js`, jQuery, Moment, Bootstrap and download.js. UI icons are inline SVG (no icon font).
 - **Shorts support** and a `fetch` wrapper that preserves the original `Response`.
 - **Minimal permissions.** `webRequestBlocking` was removed, and `data_collection_permissions` is `none`.
 - **Local by design.** No telemetry, no developer server, no remote code. Only YouTube is contacted, with your existing session.
@@ -82,6 +82,7 @@ Runtime checks for 5.2.x used Firefox 158 headless: temporary load, background t
 - [sniklaus](https://github.com/sniklaus/youtube-watchmarker) — original project and 5.1.0 base.
 - [cflaming](https://github.com/cflaming/youtube-watchmarker) — restored assets and Shorts selector.
 - [widike](https://github.com/widike/youtube-watchmarker), [capische](https://github.com/capische/youtube-watchmarker) — later work on history and watch states.
+- [Lucide](https://lucide.dev) — inline SVG icons (ISC).
 - [johan456789](https://github.com/johan456789) — fork review.
 
 ## License

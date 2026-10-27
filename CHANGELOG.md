@@ -2,6 +2,16 @@
 
 All dates are UTC. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the versioning follows [SemVer](https://semver.org/).
 
+## [Unreleased]
+
+### Changed
+
+- Options page icons are now inline Lucide SVGs instead of Font Awesome, so the UI no longer downloads an icon font.
+
+### Removed
+
+- Font Awesome stylesheet and font files (about 390 KB).
+
 ## [5.2.1] - 2026-10-24
 
 ### Changed

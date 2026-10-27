@@ -20,9 +20,10 @@ const files = new Set([
 ]);
 
 const html = fs.readFileSync(path.join(root, manifest.options_ui.page), 'utf8');
+const optionsJs = fs.readFileSync(path.join(root, 'content/index.js'), 'utf8');
 
 for (const objMatch of html.matchAll(/(?:src|href)="([^"]+)"/g)) {
-    if (objMatch[1].includes('://') === false) {
+    if (objMatch[1].includes('://') === false && objMatch[1].startsWith('#') === false) {
         files.add(path.join(path.dirname(manifest.options_ui.page), objMatch[1]));
     }
 }
@@ -36,6 +37,23 @@ assert(manifest.background.scripts.includes('background.js') === true, 'backgrou
 
 assert(manifest.permissions.includes('webRequestBlocking') === false, 'webRequestBlocking is unused and must not be requested');
 assert(manifest.browser_specific_settings.gecko.data_collection_permissions.required.includes('none') === true, 'AMO requires data_collection_permissions');
+
+const symbols = new Set([...html.matchAll(/<symbol id="([^"]+)"/g)].map(function(objMatch) {
+    return objMatch[1];
+}));
+
+assert(symbols.size >= 5, 'inline SVG icon sprite is missing symbols');
+assert(html.includes('fontawesome') === false, 'the options page must not reference Font Awesome');
+assert(/fa-(regular|solid|brands)/.test(html) === false, 'the options page must not use Font Awesome classes');
+assert(optionsJs.includes(".find('i')") === false, 'options JS must target .icon, not generic <i> elements');
+
+for (const objMatch of html.matchAll(/<use href="#([^"]+)"/g)) {
+    assert(symbols.has(objMatch[1]) === true, 'missing SVG symbol: ' + objMatch[1]);
+}
+
+for (const objMatch of optionsJs.matchAll(/#(icon-[a-z0-9-]+)/g)) {
+    assert(symbols.has(objMatch[1]) === true, 'missing SVG symbol used by JS: ' + objMatch[1]);
+}
 
 for (const strFile of ['background.js', 'youtube.js', 'hooks.js', 'content/index.js']) {
     childProcess.execFileSync(process.execPath, ['--check', path.join(root, strFile)]);

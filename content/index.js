@@ -380,7 +380,7 @@ jQuery(window.document).ready(async function() {
             await funcStorageset('extensions.Youwatch.Condition.boolBrownav', await funcStorageget('extensions.Youwatch.Condition.boolBrownav') === String(false));
 
             jQuery(this)
-                .find('i')
+                .find('.icon')
                     .eq(0)
                         .css({
                             'display': await funcStorageget('extensions.Youwatch.Condition.boolBrownav') === String(true) ? 'none' : 'block',
@@ -394,7 +394,7 @@ jQuery(window.document).ready(async function() {
                 .end()
             ;
         })
-        .find('i')
+        .find('.icon')
             .eq(0)
                 .css({
                     'display': await funcStorageget('extensions.Youwatch.Condition.boolBrownav') === String(true) ? 'none' : 'block',
@@ -413,7 +413,7 @@ jQuery(window.document).ready(async function() {
             await funcStorageset('extensions.Youwatch.Condition.boolBrowhist', await funcStorageget('extensions.Youwatch.Condition.boolBrowhist') === String(false));
 
             jQuery(this)
-                .find('i')
+                .find('.icon')
                     .eq(0)
                         .css({
                             'display': await funcStorageget('extensions.Youwatch.Condition.boolBrowhist') === String(true) ? 'none' : 'block',
@@ -427,7 +427,7 @@ jQuery(window.document).ready(async function() {
                 .end()
             ;
         })
-        .find('i')
+        .find('.icon')
             .eq(0)
                 .css({
                     'display': await funcStorageget('extensions.Youwatch.Condition.boolBrowhist') === String(true) ? 'none' : 'block',
@@ -446,7 +446,7 @@ jQuery(window.document).ready(async function() {
             await funcStorageset('extensions.Youwatch.Condition.boolYouprog', await funcStorageget('extensions.Youwatch.Condition.boolYouprog') === String(false));
 
             jQuery(this)
-                .find('i')
+                .find('.icon')
                     .eq(0)
                         .css({
                             'display': await funcStorageget('extensions.Youwatch.Condition.boolYouprog') === String(true) ? 'none' : 'block',
@@ -460,7 +460,7 @@ jQuery(window.document).ready(async function() {
                 .end()
             ;
         })
-        .find('i')
+        .find('.icon')
             .eq(0)
                 .css({
                     'display': await funcStorageget('extensions.Youwatch.Condition.boolYouprog') === String(true) ? 'none' : 'block',
@@ -479,7 +479,7 @@ jQuery(window.document).ready(async function() {
             await funcStorageset('extensions.Youwatch.Condition.boolYoubadge', await funcStorageget('extensions.Youwatch.Condition.boolYoubadge') === String(false));
 
             jQuery(this)
-                .find('i')
+                .find('.icon')
                     .eq(0)
                         .css({
                             'display': await funcStorageget('extensions.Youwatch.Condition.boolYoubadge') === String(true) ? 'none' : 'block',
@@ -493,7 +493,7 @@ jQuery(window.document).ready(async function() {
                 .end()
             ;
         })
-        .find('i')
+        .find('.icon')
             .eq(0)
                 .css({
                     'display': await funcStorageget('extensions.Youwatch.Condition.boolYoubadge') === String(true) ? 'none' : 'block',
@@ -512,7 +512,7 @@ jQuery(window.document).ready(async function() {
             await funcStorageset('extensions.Youwatch.Condition.boolYouhist', await funcStorageget('extensions.Youwatch.Condition.boolYouhist') === String(false));
 
             jQuery(this)
-                .find('i')
+                .find('.icon')
                     .eq(0)
                         .css({
                             'display': await funcStorageget('extensions.Youwatch.Condition.boolYouhist') === String(true) ? 'none' : 'block',
@@ -526,7 +526,7 @@ jQuery(window.document).ready(async function() {
                 .end()
             ;
         })
-        .find('i')
+        .find('.icon')
             .eq(0)
                 .css({
                     'display': await funcStorageget('extensions.Youwatch.Condition.boolYouhist') === String(true) ? 'none' : 'block',
@@ -545,7 +545,7 @@ jQuery(window.document).ready(async function() {
             await funcStorageset('extensions.Youwatch.Visualization.boolFadeout', await funcStorageget('extensions.Youwatch.Visualization.boolFadeout') === String(false));
 
             jQuery(this)
-                .find('i')
+                .find('.icon')
                     .eq(0)
                         .css({
                             'display': await funcStorageget('extensions.Youwatch.Visualization.boolFadeout') === String(true) ? 'none' : 'block',
@@ -559,7 +559,7 @@ jQuery(window.document).ready(async function() {
                 .end()
             ;
         })
-        .find('i')
+        .find('.icon')
             .eq(0)
                 .css({
                     'display': await funcStorageget('extensions.Youwatch.Visualization.boolFadeout') === String(true) ? 'none' : 'block',
@@ -578,7 +578,7 @@ jQuery(window.document).ready(async function() {
             await funcStorageset('extensions.Youwatch.Visualization.boolGrayout', await funcStorageget('extensions.Youwatch.Visualization.boolGrayout') === String(false));
 
             jQuery(this)
-                .find('i')
+                .find('.icon')
                     .eq(0)
                         .css({
                             'display': await funcStorageget('extensions.Youwatch.Visualization.boolGrayout') === String(true) ? 'none' : 'block',
@@ -592,7 +592,7 @@ jQuery(window.document).ready(async function() {
                 .end()
             ;
         })
-        .find('i')
+        .find('.icon')
             .eq(0)
                 .css({
                     'display': await funcStorageget('extensions.Youwatch.Visualization.boolGrayout') === String(true) ? 'none' : 'block',
@@ -611,7 +611,7 @@ jQuery(window.document).ready(async function() {
             await funcStorageset('extensions.Youwatch.Visualization.boolShowbadge', await funcStorageget('extensions.Youwatch.Visualization.boolShowbadge') === String(false));
 
             jQuery(this)
-                .find('i')
+                .find('.icon')
                     .eq(0)
                         .css({
                             'display': await funcStorageget('extensions.Youwatch.Visualization.boolShowbadge') === String(true) ? 'none' : 'block',
@@ -625,7 +625,7 @@ jQuery(window.document).ready(async function() {
                 .end()
             ;
         })
-        .find('i')
+        .find('.icon')
             .eq(0)
                 .css({
                     'display': await funcStorageget('extensions.Youwatch.Visualization.boolShowbadge') === String(true) ? 'none' : 'block',
@@ -644,7 +644,7 @@ jQuery(window.document).ready(async function() {
             await funcStorageset('extensions.Youwatch.Visualization.boolShowdate', await funcStorageget('extensions.Youwatch.Visualization.boolShowdate') === String(false));
 
             jQuery(this)
-                .find('i')
+                .find('.icon')
                     .eq(0)
                         .css({
                             'display': await funcStorageget('extensions.Youwatch.Visualization.boolShowdate') === String(true) ? 'none' : 'block',
@@ -658,7 +658,7 @@ jQuery(window.document).ready(async function() {
                 .end()
             ;
         })
-        .find('i')
+        .find('.icon')
             .eq(0)
                 .css({
                     'display': await funcStorageget('extensions.Youwatch.Visualization.boolShowdate') === String(true) ? 'none' : 'block',
@@ -677,7 +677,7 @@ jQuery(window.document).ready(async function() {
             await funcStorageset('extensions.Youwatch.Visualization.boolHideprogress', await funcStorageget('extensions.Youwatch.Visualization.boolHideprogress') === String(false));
 
             jQuery(this)
-                .find('i')
+                .find('.icon')
                     .eq(0)
                         .css({
                             'display': await funcStorageget('extensions.Youwatch.Visualization.boolHideprogress') === String(true) ? 'none' : 'block',
@@ -691,7 +691,7 @@ jQuery(window.document).ready(async function() {
                 .end()
             ;
         })
-        .find('i')
+        .find('.icon')
             .eq(0)
                 .css({
                     'display': await funcStorageget('extensions.Youwatch.Visualization.boolHideprogress') === String(true) ? 'none' : 'block',
@@ -722,7 +722,7 @@ jQuery(window.document).ready(async function() {
     let funcSearchidle = function() {
         jQuery('#idSearch_Lookup')
             .removeClass('disabled')
-            .find('i')
+            .find('.icon')
                 .eq(0)
                     .css({
                         'display': 'inline',
@@ -752,7 +752,7 @@ jQuery(window.document).ready(async function() {
 
             jQuery('#idSearch_Lookup')
                 .addClass('disabled')
-                .find('i')
+                .find('.icon')
                     .eq(0)
                         .css({
                             'display': 'none',
@@ -864,9 +864,15 @@ jQuery(window.document).ready(async function() {
                                         .css({
                                             'cursor': 'pointer',
                                         })
-                                        .append(jQuery('<i></i>')
-                                            .addClass('fa-regular')
-                                            .addClass('fa-trash-can')
+                                        .append(jQuery(document.createElementNS('http://www.w3.org/2000/svg', 'svg'))
+                                            .addClass('icon')
+                                            .attr({
+                                                'aria-hidden': 'true',
+                                                'focusable': 'false',
+                                            })
+                                            .append(jQuery(document.createElementNS('http://www.w3.org/2000/svg', 'use'))
+                                                .attr('href', '#icon-trash-2')
+                                            )
                                         )
                                         .data({
                                             'strIdent': objVideo.strIdent,
