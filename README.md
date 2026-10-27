@@ -8,7 +8,7 @@
 
 <p align="center">
   <a href="https://github.com/Jalkhov/youtube-watchmarker-redo/releases"><img src="https://img.shields.io/github/v/release/Jalkhov/youtube-watchmarker-redo?label=release" alt="Release"></a>
-  <a href="https://addons.mozilla.org/firefox/addon/watchmarker-redo-for-youtube/"><img src="https://img.shields.io/badge/AMO-in%20review-orange" alt="AMO status"></a>
+  <a href="https://addons.mozilla.org/firefox/addon/watchmarker-redo-for-youtube/"><img src="https://img.shields.io/amo/v/watchmarker-redo-for-youtube?label=AMO" alt="AMO version"></a>
   <img src="https://img.shields.io/badge/firefox-128%2B-blue" alt="Firefox 128+">
   <img src="https://img.shields.io/badge/data%20collection-none-brightgreen" alt="No data collection">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-GPL--3.0-blue" alt="GPL-3.0"></a>
@@ -30,7 +30,11 @@ Version history: [CHANGELOG.md](CHANGELOG.md).
 
 ### AMO
 
-Version **5.2.1** is in review at [addons.mozilla.org/firefox/addon/watchmarker-redo-for-youtube](https://addons.mozilla.org/firefox/addon/watchmarker-redo-for-youtube/). After approval, install it from AMO and receive updates through Firefox.
+Install from [addons.mozilla.org/firefox/addon/watchmarker-redo-for-youtube](https://addons.mozilla.org/firefox/addon/watchmarker-redo-for-youtube/). Firefox keeps it updated automatically.
+
+### Manual XPI
+
+The latest release includes the Mozilla-signed XPI for offline installs. Prefer AMO so Firefox keeps it updated.
 
 ### Temporary
 
@@ -39,10 +43,6 @@ Version **5.2.1** is in review at [addons.mozilla.org/firefox/addon/watchmarker-
 3. Select `manifest.json` in the repository root.
 
 The extension is removed when Firefox closes.
-
-### Unsigned XPI
-
-The XPI attached to GitHub releases is unsigned. Firefox Release cannot install it directly. Use `about:debugging`, or Firefox Developer Edition/Nightly with `xpinstall.signatures.required` set to `false`.
 
 ## Migrate from the original
 

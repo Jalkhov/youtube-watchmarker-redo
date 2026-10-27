@@ -11,7 +11,7 @@ All dates are UTC. The format follows [Keep a Changelog](https://keepachangelog.
 
 ### Release
 
-- Submitted to AMO as a listed add-on on 2026-10-24 (version ID 6617236). Awaiting review.
+- Submitted to AMO as a listed add-on on 2026-10-24 (version ID 6617236). Approved and published on 2026-10-27.
 
 ## [5.2.0] - 2026-10-24
 
@@ -45,7 +45,7 @@ First stable release of this fork. Based on Watchmarker 5.1.0.
 
 ### Release
 
-- Submitted to AMO as a listed add-on on 2026-10-24 (add-on ID 3106729, version ID 6617202). Awaiting review.
+- Submitted to AMO as a listed add-on on 2026-10-24 (add-on ID 3106729, version ID 6617202). Superseded by 5.2.1.
 
 ### Known limitations
 

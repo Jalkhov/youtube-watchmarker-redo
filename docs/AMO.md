@@ -4,13 +4,14 @@ Checklist for submitting **Watchmarker Redo for YouTube** to addons.mozilla.org.
 
 ## Status
 
-- Submitted on **24 October 2026** as a **listed** add-on.
+- **Approved and public since 27 October 2026.**
+- Public page: https://addons.mozilla.org/firefox/addon/watchmarker-redo-for-youtube/
 - Add-on slug: `watchmarker-redo-for-youtube` (ID 3106729).
-- Current version: **5.2.1**, version ID 6617236, status `nominated`; file `unreviewed`.
+- Current version: **5.2.1**, version ID 6617236, `public`; reviewed 2026-10-27T16:30:26Z.
+- Signed XPI: https://addons.mozilla.org/firefox/downloads/file/5161350/watchmarker_redo_for_youtube-5.2.1.xpi (SHA256 `c47748626b13d0a2daca9b7dc1b907bc7b891c6a06c7d73b73fb888896fd47a3`, 489930 bytes).
 - Previous version: 5.2.0, version ID 6617202 (superseded by 5.2.1).
 - Privacy policy: set.
 - Developer page: https://addons.mozilla.org/en-US/developers/addon/watchmarker-redo-for-youtube/
-- Public page after approval: https://addons.mozilla.org/firefox/addon/watchmarker-redo-for-youtube/
 
 ## 1. Build the package
 
@@ -88,6 +89,9 @@ If AMO asks for source code because of the minified libraries, attach the reposi
 
 ## 6. After approval
 
-- Replace the unsigned XPI on the GitHub release with the signed one from AMO.
-- Update the README and repository description to point to the public listing.
-- For the next version: bump `version` in `manifest.json`, add an entry to `CHANGELOG.md`, repeat the checklist and upload the new XPI.
+Done for 5.2.1:
+
+- Downloaded the signed XPI from AMO and replaced the unsigned ZIP on the GitHub release.
+- Updated the README, repository description and this status section to point to the public listing.
+
+For the next version: bump `version` in `manifest.json`, add an entry to `CHANGELOG.md`, repeat the checklist and upload the new XPI.
